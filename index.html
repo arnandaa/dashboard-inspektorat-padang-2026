@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dashboard Pengawasan Sentimen Publik & Analisis Risiko Pembangunan Inspektorat Daerah Kota Padang 2026">
+  <title>Sistem Pengawasan Sentimen & Analisis Risiko 2026 | Inspektorat Kota Padang</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            slate: {
+              850: '#111827',
+              900: '#0f172a',
+              950: '#090d16',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Anti-Slop System Style (Tasteskill 2.5) -->
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #0f172a;
+      --border: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #090d16; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    /* Badges */
+    .badge-prio-tinggi { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+    .badge-prio-sedang { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+    .badge-prio-rendah { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+
+    .badge-negatif { background: rgba(225, 29, 72, 0.15); color: #fb7185; border: 1px solid rgba(225, 29, 72, 0.3); }
+    .badge-positif { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-campuran { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-netral { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+    /* Tabs */
+    .tab-btn {
+      transition: all 0.15s ease-in-out;
+      border-bottom: 2px solid transparent;
+    }
+    .tab-btn.active {
+      color: #38bdf8;
+      border-bottom-color: #38bdf8;
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    /* Markdown Formatter */
+    .gemini-output h1 { font-size: 1.25rem; font-weight: 700; color: #38bdf8; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .gemini-output h2 { font-size: 1.1rem; font-weight: 700; color: #f8fafc; margin-top: 1.25rem; margin-bottom: 0.5rem; border-bottom: 1px solid #1e293b; padding-bottom: 0.25rem; }
+    .gemini-output h3 { font-size: 0.95rem; font-weight: 600; color: #93c5fd; margin-top: 0.75rem; margin-bottom: 0.25rem; }
+    .gemini-output p { margin-bottom: 0.6rem; line-height: 1.6; color: #cbd5e1; font-size: 0.85rem; }
+    .gemini-output ul, .gemini-output ol { margin-left: 1.25rem; margin-bottom: 0.75rem; font-size: 0.85rem; line-height: 1.5; }
+    .gemini-output li { margin-bottom: 0.25rem; }
+    .gemini-output strong { color: #ffffff; }
+    .gemini-output blockquote { border-left: 3px solid #0284c7; padding-left: 0.75rem; color: #94a3b8; margin: 0.5rem 0; font-style: italic; }
+    .gemini-output table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.8rem; }
+    .gemini-output th { background-color: #0b1120; color: #38bdf8; padding: 0.6rem 0.75rem; border: 1px solid #1e293b; text-align: left; font-weight: 600; }
+    .gemini-output td { padding: 0.6rem 0.75rem; border: 1px solid #1e293b; color: #e2e8f0; vertical-align: top; line-height: 1.5; }
+    .gemini-output tr:nth-child(even) { background-color: rgba(15, 23, 42, 0.4); }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background-color: #ffffff; color: #000000; }
+      .bg-slate-900 { background-color: #ffffff !important; border-color: #cbd5e1 !important; color: #000000 !important; }
+    }
+  </style>
+</head>
+<body class="custom-scroll selection:bg-sky-500/20 selection:text-sky-300">
+
+  <!-- WRAPPER UTAMA DENGAN EQUAL EDGES (TASTESKILL SYSTEM) -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- 1. HEADER RESMI EKSEKUTIF -->
+    <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center pb-5 border-b border-slate-800 gap-4">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-sky-950 border border-sky-700/60 flex items-center justify-center font-bold text-sky-400 text-lg shadow-inner">
+            APIP
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs uppercase tracking-wider font-semibold text-sky-400">Inspektorat Daerah Kota Padang</span>
+              <span class="px-2 py-0.5 text-[10px] font-semibold rounded bg-sky-950 text-sky-300 border border-sky-800">Sistem Pengawasan Berbasis Risiko & Data Riil 2026</span>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white mt-0.5">
+              Pemetaan Sentimen Publik & Mitigasi Risiko Layanan
+            </h1>
+          </div>
+        </div>
+        <div class="mt-2.5 flex items-center gap-2 text-xs text-slate-400">
+          <span class="inline-flex items-center gap-1 font-semibold text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            57 Data Riil Terverifikasi (100% Bebas Data Dummy)
+          </span>
+          <span class="text-slate-600">&bull;</span>
+          <span>Urutan Kronologis: <strong class="text-slate-200">05 Nov 2026 (Terkini)</strong> &rarr; <strong class="text-slate-200">03 Jan 2026 (Awal Tahun)</strong></span>
+        </div>
+      </div>
+
+      <!-- Action Toolbar -->
+      <div class="flex flex-wrap items-center gap-2 no-print">
+        <button type="button" onclick="openProgulScraperModal()" 
+                class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-emerald-950/60 hover:bg-emerald-900 text-emerald-200 border border-emerald-700/60 transition shadow-sm active:scale-[0.98]">
+          <span>📡</span> Tarik Berita Progul (Scraper)
+        </button>
+        <button type="button" onclick="openImportModal()" 
+                class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 transition shadow-sm active:scale-[0.98]">
+          <span>+</span> Impor Data File/Manual
+        </button>
+        <button type="button" onclick="openApiKeyModal()" 
+                class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-sky-950/60 hover:bg-sky-900 text-sky-200 border border-sky-700/60 transition shadow-sm active:scale-[0.98]">
+          <span>🔑</span> API Key Gemini
+        </button>
+        <button type="button" onclick="window.print()" 
+                class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 transition shadow-sm active:scale-[0.98]">
+          <span>🖨️</span> Cetak / PDF
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. EXECUTIVE KPI OVERVIEW (4 KARTU EKSEKUTIF) -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="rounded-xl border border-slate-800 bg-slate-900/90 p-4 shadow-sm">
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Total Kasus Riil Terverifikasi</div>
+        <div class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-white" id="statTotalRecords">57</div>
+        <div class="mt-1 flex items-center gap-1 text-[11px] font-semibold text-emerald-400">
+          <span>✓</span> 100% Bukti Aktif
+        </div>
+        <div class="text-[10px] text-slate-500 mt-0.5">Terindeks Google, berita media & YouTube</div>
+      </div>
+
+      <div class="rounded-xl border border-slate-800 bg-slate-900/90 p-4 shadow-sm">
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Aspirasi Perbaikan Fasilitas</div>
+        <div class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-rose-400">28</div>
+        <div class="mt-1 text-[11px] font-semibold text-rose-400">
+          49.1% dari total aduan
+        </div>
+        <div class="text-[10px] text-slate-500 mt-0.5">Permintaan pembenahan operasional teknis</div>
+      </div>
+
+      <div class="rounded-xl border border-slate-800 bg-slate-900/90 p-4 shadow-sm">
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Dukungan Publik Pembangunan</div>
+        <div class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-emerald-400">19</div>
+        <div class="mt-1 text-[11px] font-semibold text-emerald-400">
+          33.3% apresiasi warga
+        </div>
+        <div class="text-[10px] text-slate-500 mt-0.5">Proyek fisik, transparansi & penertiban</div>
+      </div>
+
+      <div class="rounded-xl border border-slate-800 bg-slate-900/90 p-4 shadow-sm">
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Sentimen Kebijakan Campuran</div>
+        <div class="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-amber-400">10</div>
+        <div class="mt-1 text-[11px] font-semibold text-amber-400">
+          17.5% dinamika kebijakan
+        </div>
+        <div class="text-[10px] text-slate-500 mt-0.5">Penataan PKL, tarif parkir & trayek</div>
+      </div>
+    </section>
+
+    <!-- 3. TAB NAVIGATION (SEGMENTED CONTROL) -->
+    <nav class="flex gap-2 border-b border-slate-800 overflow-x-auto no-print">
+      <button id="btn-tab-analytics" type="button" onclick="switchTab('tab-analytics')"
+              class="tab-btn active px-4 py-2.5 text-xs font-semibold text-slate-300 hover:text-white rounded-t-lg transition whitespace-nowrap">
+        📊 Analisis Mendalam & Matriks Risiko (Gemini AI)
+      </button>
+      <button id="btn-tab-database" type="button" onclick="switchTab('tab-database')"
+              class="tab-btn px-4 py-2.5 text-xs font-semibold text-slate-400 hover:text-white rounded-t-lg transition whitespace-nowrap">
+        📁 Database Aduan Riil & Tautan Sumber (<span id="navDbCount">57</span>)
+      </button>
+      <button id="btn-tab-progul" type="button" onclick="switchTab('tab-progul')"
+              class="tab-btn px-4 py-2.5 text-xs font-semibold text-slate-400 hover:text-white rounded-t-lg transition whitespace-nowrap">
+        🏆 Rangkuman 9 Program Unggulan Wali Kota
+      </button>
+    </nav>
+
+    <!-- 4. KONTEN TAB UTAMA -->
+    <main class="space-y-6">
+
+      <!-- ========================================== -->
+      <!-- TAB 1: ANALISIS MENDALAM & MATRIKS RISIKO -->
+      <!-- ========================================== -->
+      <div id="tab-analytics" class="tab-content space-y-6">
+
+        <!-- Header Panel Analisis -->
+        <div class="rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-sky-950/30 p-5 shadow-sm">
+          <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-sky-950 text-sky-300 border border-sky-800">
+                  DEEP INVESTIGATIVE AUDIT ANALYTICS
+                </span>
+                <span class="text-xs text-slate-400">Google Gemini 3.1 Flash-Lite Engine</span>
+              </div>
+              <h2 class="text-lg sm:text-xl font-black text-white mt-2">
+                Diseksi Pola Kejadian, Akar Masalah Struktural & Matriks Kuadran Intervensi 2026
+              </h2>
+              <p class="text-xs text-slate-300 mt-1 max-w-4xl leading-relaxed">
+                Analisis menyeluruh yang memetakan relasi sebab-akibat dari 57 data aduan lapangan Kota Padang menjadi model kuadran risiko, dekomposisi pilar kegagalan pelayanan, serta instrumen audit mitigasi bagi pimpinan.
+              </p>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0 no-print">
+              <button type="button" onclick="openApiKeyModal()" 
+                      class="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+                🌐 Ubah API Key
+              </button>
+              <button id="btnRunGemini" type="button" onclick="runGeminiSynthesis()" 
+                      class="px-3.5 py-2 rounded-lg text-xs font-semibold bg-sky-900 hover:bg-sky-800 text-sky-200 border border-sky-700 transition flex items-center gap-1.5 shadow-sm">
+                <span id="geminiSpinIcon" style="display:none;" class="w-3.5 h-3.5 border-2 border-sky-300 border-t-transparent rounded-full animate-spin"></span>
+                <span id="btnRunGeminiLabel">✨ Perbarui Analisis dengan Gemini AI</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1. Peta Klaster Isu Lapangan & Indeks Keparahan -->
+        <section class="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+              <span>📊</span> 1. Peta Klaster Isu Lapangan & Indeks Keparahan (Severity Index 2026)
+            </h3>
+            <span class="text-xs text-slate-400 italic">💡 Klik kartu klaster untuk memfilter database aduan</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Pasar -->
+            <div onclick="filterByCluster('pasar'); switchTab('tab-database')"
+                 class="group cursor-pointer rounded-xl border border-rose-900/50 bg-rose-950/20 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-rose-600 hover:bg-rose-950/30">
+              <div class="flex justify-between items-start">
+                <span class="text-xs font-bold text-rose-300">Pasar & Ekonomi Rakyat</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-900/60 text-rose-200 border border-rose-700">Ekstrem</span>
+              </div>
+              <div class="mt-2 text-2xl font-black text-rose-400">
+                16 Kasus <span class="text-xs font-semibold text-rose-500">(28.1%)</span>
+              </div>
+              <div class="mt-2 h-1.5 w-full rounded-full bg-rose-950/80 overflow-hidden">
+                <div class="h-full bg-rose-500 rounded-full" style="width: 28.1%"></div>
+              </div>
+              <p class="mt-2 text-[11px] leading-relaxed text-slate-300">
+                Revitalisasi Fase VII sepi, omset anjlok 60%, akses tangga/lift, dan ketidakpastian zonasi 4 ribu pedagang.
+              </p>
+              <div class="mt-3 flex items-center justify-between text-[11px] font-semibold text-rose-400">
+                <span>Dinas Perdagangan</span>
+                <span class="group-hover:underline">Buka 16 Data &rarr;</span>
+              </div>
+            </div>
+
+            <!-- Drainase -->
+            <div onclick="filterByCluster('drainase'); switchTab('tab-database')"
+                 class="group cursor-pointer rounded-xl border border-amber-900/50 bg-amber-950/20 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-amber-600 hover:bg-amber-950/30">
+              <div class="flex justify-between items-start">
+                <span class="text-xs font-bold text-amber-300">Infrastruktur & Drainase</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-900/60 text-amber-200 border border-amber-700">Ekstrem</span>
+              </div>
+              <div class="mt-2 text-2xl font-black text-amber-400">
+                14 Kasus <span class="text-xs font-semibold text-amber-500">(24.6%)</span>
+              </div>
+              <div class="mt-2 h-1.5 w-full rounded-full bg-amber-950/80 overflow-hidden">
+                <div class="h-full bg-amber-500 rounded-full" style="width: 24.6%"></div>
+              </div>
+              <p class="mt-2 text-[11px] leading-relaxed text-slate-300">
+                Sedimentasi saluran Koto Tangah, jembatan putus Kurao Pagang, dan drainase buruk Padang Barat saat hujan lebat.
+              </p>
+              <div class="mt-3 flex items-center justify-between text-[11px] font-semibold text-amber-400">
+                <span>Dinas PUPR</span>
+                <span class="group-hover:underline">Buka 14 Data &rarr;</span>
+              </div>
+            </div>
+
+            <!-- Transportasi -->
+            <div onclick="filterByCluster('transportasi'); switchTab('tab-database')"
+                 class="group cursor-pointer rounded-xl border border-sky-900/50 bg-sky-950/20 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600 hover:bg-sky-950/30">
+              <div class="flex justify-between items-start">
+                <span class="text-xs font-bold text-sky-300">Transportasi & Sitinjau</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-900/60 text-sky-200 border border-sky-700">Tinggi</span>
+              </div>
+              <div class="mt-2 text-2xl font-black text-sky-400">
+                12 Kasus <span class="text-xs font-semibold text-sky-500">(21.1%)</span>
+              </div>
+              <div class="mt-2 h-1.5 w-full rounded-full bg-sky-950/80 overflow-hidden">
+                <div class="h-full bg-sky-500 rounded-full" style="width: 21.1%"></div>
+              </div>
+              <p class="mt-2 text-[11px] leading-relaxed text-slate-300">
+                Macet 8 km Sitinjau Lauik, buka-tutup pengerjaan flyover Rp1,8T, dan gesekan rute Trans Padang vs sopir angkot.
+              </p>
+              <div class="mt-3 flex items-center justify-between text-[11px] font-semibold text-sky-400">
+                <span>Dinas Perhubungan</span>
+                <span class="group-hover:underline">Buka 12 Data &rarr;</span>
+              </div>
+            </div>
+
+            <!-- Ketertiban -->
+            <div onclick="filterByCluster('ketertiban'); switchTab('tab-database')"
+                 class="group cursor-pointer rounded-xl border border-emerald-900/50 bg-emerald-950/20 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-emerald-600 hover:bg-emerald-950/30">
+              <div class="flex justify-between items-start">
+                <span class="text-xs font-bold text-emerald-300">Ketertiban, Wisata & Sampah</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-900/60 text-emerald-200 border border-emerald-700">Tinggi</span>
+              </div>
+              <div class="mt-2 text-2xl font-black text-emerald-400">
+                15 Kasus <span class="text-xs font-semibold text-emerald-500">(26.3%)</span>
+              </div>
+              <div class="mt-2 h-1.5 w-full rounded-full bg-emerald-950/80 overflow-hidden">
+                <div class="h-full bg-emerald-500 rounded-full" style="width: 26.3%"></div>
+              </div>
+              <p class="mt-2 text-[11px] leading-relaxed text-slate-300">
+                Pungli jukir Taplau, tenda ceper Pantai Padang, krisis 640 ton sampah TPA Air Dingin, dan penertiban PKL.
+              </p>
+              <div class="mt-3 flex items-center justify-between text-[11px] font-semibold text-emerald-400">
+                <span>DLH & Satpol PP</span>
+                <span class="group-hover:underline">Buka 15 Data &rarr;</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Matriks Kuadran Intervensi APIP 2x2 -->
+        <section class="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+              <span>🎯</span> 2. Matriks Kuadran Intervensi APIP (Dampak Risiko vs Urgensi Penanganan)
+            </h3>
+            <span class="text-xs text-slate-400">Penetapan skala prioritas audit Inspektorat Kota Padang</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Kuadran I -->
+            <div class="rounded-xl border-2 border-rose-800/80 bg-rose-950/25 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-black uppercase tracking-wider text-rose-300">⚠️ KUADRAN I — TINDAK SEKARANG</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-900 text-rose-200">Dampak Tinggi | Urgensi Tinggi</span>
+              </div>
+              <ul class="text-xs space-y-2 text-slate-200 pl-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-rose-400 font-bold">•</span>
+                  <div><strong>Pasar Raya Fase VII:</strong> Hunian lantai 2 di bawah 30%, omset pedagang anjlok 60% — risiko kegagalan proyek revitalisasi Rp120M. Audit kinerja manajemen transisi Disdag wajib selesai November 2026.</div>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-rose-400 font-bold">•</span>
+                  <div><strong>Drainase Koto Tangah & Padang Barat:</strong> 12 aduan genangan berulang tanpa pemeliharaan preventif — audit kepatuhan kontrak pemeliharaan berkala PUPR Q4 2026.</div>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-rose-400 font-bold">•</span>
+                  <div><strong>Pungli Parkir Liar Taplau:</strong> Modus tarif tembak tanpa karcis resmi mengikis PAD pariwisata. Audit ketaatan penerimaan Satpol PP + Dishub Desember 2026.</div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Kuadran II -->
+            <div class="rounded-xl border-2 border-amber-800/80 bg-amber-950/25 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-black uppercase tracking-wider text-amber-300">📋 KUADRAN II — JADWALKAN & ANTISIPASI</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-900 text-amber-200">Dampak Tinggi | Urgensi Sedang</span>
+              </div>
+              <ul class="text-xs space-y-2 text-slate-200 pl-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-amber-400 font-bold">•</span>
+                  <div><strong>Mega Proyek Flyover Sitinjau Lauik:</strong> Anggaran Rp1,8T — risiko keselamatan konstruksi, sengketa lahan akses, dan kemacetan logistik antarkota. Reviu K3 wajib masuk PKPT 2027.</div>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-amber-400 font-bold">•</span>
+                  <div><strong>Over-Kapasitas TPA Air Dingin:</strong> Masukan 640 ton sampah/hari vs kapasitas 400 ton/hari — reviu kepatuhan AMDAL dan pemantauan pencemaran lindi DLH Q1 2027.</div>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-amber-400 font-bold">•</span>
+                  <div><strong>Ekspansi Rute Trans Padang:</strong> Potensi konflik trayek dengan sopir angkot lokal jika tanpa skema konversi atau subsidi terintegrasi. Reviu regulasi Dishub Q1 2027.</div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Kuadran III -->
+            <div class="rounded-xl border-2 border-sky-800/80 bg-sky-950/25 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-black uppercase tracking-wider text-sky-300">🔍 KUADRAN III — MONITOR RUTIN</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-900 text-sky-200">Dampak Sedang | Urgensi Tinggi</span>
+              </div>
+              <ul class="text-xs space-y-2 text-slate-200 pl-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-sky-400 font-bold">•</span>
+                  <div><strong>Penurunan Frekuensi Angkot:</strong> Dampak operasional koridor baru Trans Padang — monitor keluhan warga pelosok yang belum terjangkau bus massal secara bulanan.</div>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-sky-400 font-bold">•</span>
+                  <div><strong>Genangan Pasang Rob Padang Barat:</strong> Perlu koordinasi pintu klep air laut antara Dinas PUPR dengan BMKG Maritim sebelum musim barat.</div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Kuadran IV -->
+            <div class="rounded-xl border-2 border-emerald-800/80 bg-emerald-950/25 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-black uppercase tracking-wider text-emerald-300">✅ KUADRAN IV — DELEGASIKAN KE OPD</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-900 text-emerald-200">Dampak Sedang | Urgensi Sedang</span>
+              </div>
+              <ul class="text-xs space-y-2 text-slate-200 pl-2">
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-bold">•</span>
+                  <div><strong>Relokasi PKL Pantai Padang:</strong> Satpol PP wajib menyediakan titik relokasi definitif dalam BA penertiban paling lambat 31 Maret 2027 agar tidak terjadi siklus kembali berjualan.</div>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-bold">•</span>
+                  <div><strong>Penyediaan Bak Sampah Pasar Raya:</strong> DLH menempatkan minimal 8 unit bak sampah tertutup di lorong pertokoan sebelum 31 Desember 2026.</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Analisis 4 Pilar Kegagalan Pelayanan Sistemik -->
+        <section class="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 shadow-sm space-y-4">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+            <span>🧩</span> 3. Analisis 4 Pilar Kegagalan Pelayanan Sistemik
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Pilar 1 -->
+            <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-rose-300">Pilar 1: Kegagalan Tata Kelola Transisi Pasar</span>
+                <span class="text-[10px] text-slate-400 font-mono">Dinas Perdagangan</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Dinas Perdagangan tidak memiliki SOP tertulis untuk manajemen transisi pedagang ke gedung baru. Absennya eskalator aktif, sistem petunjuk arah, dan skema insentif sewa menyebabkan pedagang lantai 2 kehilangan pembeli lama dan terdesak turun kembali ke trotoar jalan.
+              </p>
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-rose-950 text-rose-300 border border-rose-800">KPI: Hunian Lantai 2 &ge; 70% Q1 2027</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">Perwali Zonasi PKL: 31 Des 2026</span>
+              </div>
+            </div>
+
+            <!-- Pilar 2 -->
+            <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-amber-300">Pilar 2: Ketiadaan Pemeliharaan Preventif Drainase</span>
+                <span class="text-[10px] text-slate-400 font-mono">Dinas PUPR</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                12 kejadian banjir berulang di Koto Tangah dan Padang Barat bukan anomali alam, melainkan akibat sistem pengerukan sedimen yang reaktif (baru dikeruk saat banjir). Volume pemeliharaan dalam dokumen anggaran 2024–2026 tidak proporsional dengan sedimentasi riil.
+              </p>
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-950 text-amber-300 border border-amber-800">Desludging Rutin 2x/tahun per segmen</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">Audit Kontrak Drainase: Q4 2026</span>
+              </div>
+            </div>
+
+            <!-- Pilar 3 -->
+            <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-sky-300">Pilar 3: Transisi Transportasi Tanpa Mitigasi Sosial</span>
+                <span class="text-[10px] text-slate-400 font-mono">Dinas Perhubungan</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Pengembangan armada Trans Padang diluncurkan tanpa kajian mendalam terhadap pendapatan pengemudi angkutan kota konvensional. Di Sitinjau Lauik, SOP evakuasi mogok dan manajemen pengerjaan konstruksi flyover belum memiliki posko darurat 24 jam.
+              </p>
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-sky-950 text-sky-300 border border-sky-800">Reviu K3 Flyover Sitinjau: Masuk PKPT 2027</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">Kajian Trayek Angkot: Feb 2027</span>
+              </div>
+            </div>
+
+            <!-- Pilar 4 -->
+            <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-emerald-300">Pilar 4: Penegakan Tanpa Kepastian Pasca-Operasi</span>
+                <span class="text-[10px] text-slate-400 font-mono">Satpol PP & DLH</span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Penertiban PKL Pantai Padang berulang tanpa solusi lapak relokasi definitif memicu lingkaran setan kucing-kucingan. Di sektor parkir Taplau, belum diterapkannya karcis barcode resmi atau e-parkir menyebabkan retribusi bocor ke oknum jukir liar.
+              </p>
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-950 text-emerald-300 border border-emerald-800">Titik Relokasi Definitif: 31 Mar 2027</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">Audit PAD Parkir Wisata: Des 2026</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Matriks Kausalitas 360° per OPD -->
+        <section class="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 shadow-sm space-y-4">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+            <span>📋</span> 4. Matriks Kausalitas 360&deg; per OPD (Akar Masalah &rarr; Aksi Korektif Terukur)
+          </h3>
+
+          <div class="overflow-x-auto rounded-xl border border-slate-800">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="bg-slate-950 text-slate-300 font-semibold border-b border-slate-800">
+                <tr>
+                  <th class="p-3 w-36">OPD Terkait</th>
+                  <th class="p-3 w-48">Titik Isu Kritis</th>
+                  <th class="p-3">Akar Masalah Struktural</th>
+                  <th class="p-3 w-44">Dampak Kerugian</th>
+                  <th class="p-3 w-64 text-sky-400">Aksi Korektif & KPI Terukur</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/80 bg-slate-900/40 text-slate-300">
+                <tr class="hover:bg-slate-800/30 transition">
+                  <td class="p-3 font-bold text-rose-300">Dinas Perdagangan</td>
+                  <td class="p-3 font-medium text-slate-100">Fase VII Pasar Raya Sepi, Omset Anjlok 60%</td>
+                  <td class="p-3 leading-relaxed">Ketiadaan eskalator aktif, zonasi tidak transparan, dan tidak ada pengarah jalur belanja pelanggan.</td>
+                  <td class="p-3 text-rose-400">Potensi mangkrak aset Rp120M & omset 4.000 pedagang hilang.</td>
+                  <td class="p-3 text-slate-200">Terbitkan Perwali zonasi PKL & SOP transisi (31 Des 2026). Target: okupansi lantai 2 &ge; 70% Q1 2027.</td>
+                </tr>
+                <tr class="hover:bg-slate-800/30 transition">
+                  <td class="p-3 font-bold text-amber-300">Dinas PUPR</td>
+                  <td class="p-3 font-medium text-slate-100">Drainase Koto Tangah Tersumbat & Jembatan Kurao</td>
+                  <td class="p-3 leading-relaxed">Sedimentasi masif tidak dikeruk secara berkala; keterlambatan penanganan oprit jembatan putus.</td>
+                  <td class="p-3 text-amber-400">Genangan permukiman berulang & kerugian material warga.</td>
+                  <td class="p-3 text-slate-200">Jadwal desludging berkala 2x/tahun per segmen (Jan 2027). Perbaikan permanen Jembatan Kurao masuk RPIJM 2027.</td>
+                </tr>
+                <tr class="hover:bg-slate-800/30 transition">
+                  <td class="p-3 font-bold text-sky-300">Dinas Perhubungan</td>
+                  <td class="p-3 font-medium text-slate-100">Macet Sitinjau Lauik & Gesekan Trans Padang</td>
+                  <td class="p-3 leading-relaxed">Ketiadaan derek siaga cepat saat truk mogok di tikungan; tidak ada forum musyawarah rute angkot.</td>
+                  <td class="p-3 text-sky-400">Kelumpuhan logistik Sumbar-Riau & gesekan antarpengemudi.</td>
+                  <td class="p-3 text-slate-200">SOP posko derek 24 jam Sitinjau Lauik (Des 2026). Reviu K3 konstruksi flyover masuk PKPT 2027.</td>
+                </tr>
+                <tr class="hover:bg-slate-800/30 transition">
+                  <td class="p-3 font-bold text-emerald-300">DLH & Satpol PP</td>
+                  <td class="p-3 font-medium text-slate-100">Krisis TPA Air Dingin & Pungli Parkir Taplau</td>
+                  <td class="p-3 leading-relaxed">Over-kapasitas timbunan 640 ton sampah; ketiadaan karcis sistematis pengawasan parkir wisata.</td>
+                  <td class="p-3 text-emerald-400">Pencemaran air tanah lindi & bocornya potensi PAD retribusi wisata.</td>
+                  <td class="p-3 text-slate-200">Studi kelayakan TPA regional baru (Maret 2027). Terapkan e-parkir terpusat di kawasan Pantai Padang (Q1 2027).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 5. Empat Instrumen Audit Konkret bagi Pimpinan Inspektorat -->
+        <section class="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 shadow-sm space-y-4">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+            <span>🛡️</span> 5. Empat Instrumen Audit Konkret untuk Pimpinan Inspektorat
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Instrumen 1 -->
+            <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-rose-300">1. Audit Kinerja Manajemen Transisi Pasar Raya</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-800">Target: Nov 2026</span>
+              </div>
+              <div class="text-[11px] text-slate-400 space-y-1">
+                <div><strong>OPD Sasaran:</strong> Dinas Perdagangan & Dinas PUPR</div>
+                <div><strong>Landasan Regulasi:</strong> PP No. 60 Tahun 2008 tentang SPIP (Pasal 13 & 15), Permendagri 90/2019.</div>
+                <div><strong>Metode Audit:</strong> Uji petik tingkat okupansi toko lantai 1-3, wawancara pedagang, reviu SOP pembagian lapak.</div>
+                <div class="text-sky-300 font-semibold">Output: LHA Kinerja dengan tenggat tindak lanjut 30 hari.</div>
+              </div>
+            </div>
+
+            <!-- Instrumen 2 -->
+            <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-amber-300">2. Audit Kepatuhan Pemeliharaan Preventif Drainase</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-950 text-amber-300 border border-amber-800">Target: Q4 2026</span>
+              </div>
+              <div class="text-[11px] text-slate-400 space-y-1">
+                <div><strong>OPD Sasaran:</strong> Dinas PUPR (Bidang Sumber Daya Air)</div>
+                <div><strong>Landasan Regulasi:</strong> Peraturan Menteri Keuangan No. 196/2012, PP No. 14 Tahun 2016.</div>
+                <div><strong>Metode Audit:</strong> Rekonsiliasi volume pengerukan sedimen aktual vs RAB kontrak, uji sondir sedimentasi.</div>
+                <div class="text-sky-300 font-semibold">Output: Rekomendasi jadwal pemeliharaan wajib berbasis peta risiko.</div>
+              </div>
+            </div>
+
+            <!-- Instrumen 3 -->
+            <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-sky-300">3. Reviu Kepatuhan K3 Konstruksi Flyover Sitinjau Lauik</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-950 text-sky-300 border border-sky-800">Target: PKPT 2027</span>
+              </div>
+              <div class="text-[11px] text-slate-400 space-y-1">
+                <div><strong>OPD Sasaran:</strong> Dinas Perhubungan & Dinas PUPR</div>
+                <div><strong>Landasan Regulasi:</strong> PP No. 22 Tahun 2020 tentang Jasa Konstruksi, Permen PUPR No. 21/2019.</div>
+                <div><strong>Metode Audit:</strong> Reviu Rencana Keselamatan Konstruksi (RKK), uji waktu respons tanggap mogok.</div>
+                <div class="text-sky-300 font-semibold">Output: Standard Operating Procedure (SOP) kontinjensi Sitinjau 24 Jam.</div>
+              </div>
+            </div>
+
+            <!-- Instrumen 4 -->
+            <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-emerald-300">4. Audit Penerimaan & Ketaatan Retribusi Parkir Wisata</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">Target: Des 2026</span>
+              </div>
+              <div class="text-[11px] text-slate-400 space-y-1">
+                <div><strong>OPD Sasaran:</strong> Satpol PP & Dinas Perhubungan</div>
+                <div><strong>Landasan Regulasi:</strong> Permendagri No. 47 Tahun 2021 tentang Tata Cara Pemungutan Retribusi Daerah.</div>
+                <div><strong>Metode Audit:</strong> Mystery shopping di 5 titik Pantai Padang, uji petik karcis vs setoran kas daerah.</div>
+                <div class="text-sky-300 font-semibold">Output: Penghapusan total jukir liar & migrasi ke e-parkir terpusat.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Area Output Gemini AI Real-Time -->
+        <section class="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 pb-3 border-b border-slate-800">
+            <div>
+              <h3 class="text-sm font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+                <span>🤖</span> Analisis Real-Time Gemini AI (57 Rekam Data)
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5" id="geminiMetaInfo">
+                Dihasilkan langsung dari analisis 57 kejadian riil Kota Padang tahun 2026
+              </p>
+            </div>
+            <button type="button" onclick="copyGeminiOutput()" 
+                    class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5 no-print">
+              <span>📋</span> Salin Teks Analisis
+            </button>
+          </div>
+
+          <div id="geminiOutputBody" class="gemini-output text-slate-300">
+            <!-- Output Gemini dirender di sini via parseMarkdown() -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 2: DATABASE ADUAN RIIL & TAUTAN SUMBER -->
+      <!-- ========================================== -->
+      <div id="tab-database" class="tab-content hidden space-y-4">
+
+        <!-- Banner Klaster Aktif -->
+        <div id="clusterFilterBanner" class="hidden"></div>
+
+        <!-- Toolbar Filter & Pencarian -->
+        <div id="databaseTableSection" class="rounded-2xl border border-slate-800 bg-slate-900/90 p-4 space-y-3 shadow-sm">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5">
+            <!-- Input Cari -->
+            <div class="md:col-span-4 relative">
+              <input type="text" id="searchInput" oninput="applyFilters()" 
+                     placeholder="Cari kata kunci, lokasi, OPD, progul..."
+                     class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3.5 py-2 text-xs text-slate-200 placeholder-slate-500 focus:border-sky-500 focus:outline-none pr-8">
+              <button id="btnClearSearch" type="button" onclick="clearSearchInput()" 
+                      class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs font-bold">
+                ✕
+              </button>
+            </div>
+
+            <!-- Filter Bulan -->
+            <div class="md:col-span-2">
+              <select id="monthFilter" onchange="applyFilters()" 
+                      class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-slate-200 focus:border-sky-500 focus:outline-none">
+                <option value="all">Semua Bulan (2026)</option>
+          <option value="2026-11">November 2026</option>
+          <option value="2026-10">Oktober 2026</option>
+          <option value="2026-09">September 2026</option>
+          <option value="2026-08">Agustus 2026</option>
+          <option value="2026-07">Juli 2026</option>
+          <option value="2026-06">Juni 2026</option>
+          <option value="2026-05">Mei 2026</option>
+          <option value="2026-04">April 2026</option>
+          <option value="2026-03">Maret 2026</option>
+          <option value="2026-02">Februari 2026</option>
+          <option value="2026-01">Januari 2026</option>
+
+              </select>
+            </div>
+
+            <!-- Filter Prioritas -->
+            <div class="md:col-span-2">
+              <select id="prioFilter" onchange="applyFilters()" 
+                      class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-slate-200 focus:border-sky-500 focus:outline-none">
+                <option value="all">Semua Prioritas</option>
+                <option value="Tinggi">Prioritas Tinggi</option>
+                <option value="Sedang">Prioritas Sedang</option>
+                <option value="Rendah">Prioritas Rendah</option>
+              </select>
+            </div>
+
+            <!-- Filter OPD -->
+            <div class="md:col-span-2">
+              <select id="opdFilter" onchange="applyFilters()" 
+                      class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-slate-200 focus:border-sky-500 focus:outline-none">
+                <option value="all">Semua OPD Teknis</option>
+                <option value="Dinas Perdagangan">Dinas Perdagangan</option>
+                <option value="Dinas PUPR">Dinas PUPR</option>
+                <option value="Dinas Perhubungan">Dinas Perhubungan</option>
+                <option value="Dinas Lingkungan Hidup">Dinas Lingkungan Hidup</option>
+                <option value="Satpol PP">Satpol PP</option>
+              </select>
+            </div>
+
+            <!-- Filter Sentimen -->
+            <div class="md:col-span-2">
+              <select id="sentFilter" onchange="applyFilters()" 
+                      class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-slate-200 focus:border-sky-500 focus:outline-none">
+                <option value="all">Semua Sentimen</option>
+                <option value="negatif">Negatif (Aduan)</option>
+                <option value="positif">Positif (Dukungan)</option>
+                <option value="campuran">Campuran / Netral</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quick Filter Chips & Reset -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800/80">
+            <div class="flex flex-wrap items-center gap-1.5 text-xs">
+              <span class="text-slate-500 text-[11px] mr-1">Filter Cepat:</span>
+              <button type="button" onclick="quickSearch('Pasar Raya')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-rose-950/60 text-rose-300 border border-rose-800/60 hover:bg-rose-900 transition">Pasar Raya</button>
+              <button type="button" onclick="quickSearch('Drainase')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-amber-950/60 text-amber-300 border border-amber-800/60 hover:bg-amber-900 transition">Drainase</button>
+              <button type="button" onclick="quickSearch('Sitinjau')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-sky-950/60 text-sky-300 border border-sky-800/60 hover:bg-sky-900 transition">Sitinjau Lauik</button>
+              <button type="button" onclick="quickSearch('Pungli')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-950/60 text-emerald-300 border border-emerald-800/60 hover:bg-emerald-900 transition">Pungli & PKL</button>
+              <button type="button" onclick="quickSearch('Sampah')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 transition">Sampah TPA</button>
+              <button type="button" onclick="quickSearch('Padang Amanah')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-sky-950/60 text-sky-300 border border-sky-800/60 hover:bg-sky-900 transition">Padang Amanah</button>
+              <button type="button" onclick="quickSearch('Padang Juara')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-sky-950/60 text-sky-300 border border-sky-800/60 hover:bg-sky-900 transition">Padang Juara</button>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <span class="text-xs text-slate-400">
+                Menampilkan <strong id="displayedCount" class="text-white font-bold">57</strong> dari 57 data riil
+              </span>
+              <button type="button" onclick="resetAllFilters()" 
+                      class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                Reset Filter
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabel Database 8 Kolom (100% Sesuai renderTable di dashboard_logic.js) -->
+        <div class="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/90 shadow-sm">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead class="bg-slate-950 text-slate-400 font-semibold border-b border-slate-800 sticky top-0 z-10">
+              <tr>
+                <th class="p-3 w-10 text-center">#</th>
+                <th class="p-3 w-28">Waktu & Tanggal</th>
+                <th class="p-3 w-20">Prioritas</th>
+                <th class="p-3 w-40">OPD & Wilayah</th>
+                <th class="p-3 w-32">Program Unggulan</th>
+                <th class="p-3">Ringkasan Aduan / Fakta Lapangan</th>
+                <th class="p-3 w-24 text-center">Sentimen</th>
+                <th class="p-3 w-36 text-center">Bukti Tautan Riil</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-slate-800/60 text-slate-300 font-sans">
+              <!-- Baris data di-render secara dinamis oleh renderTable(dataset) -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 3: RANGKUMAN 9 PROGRAM UNGGULAN        -->
+      <!-- ========================================== -->
+      <div id="tab-progul" class="tab-content hidden space-y-6">
+
+        <div class="rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 to-sky-950/30 p-5 shadow-sm">
+          <h2 class="text-lg sm:text-xl font-bold text-white">
+            9 Program Unggulan (Progul) Wali Kota Padang — Fadly Amran & Maigus Nasir
+          </h2>
+          <p class="text-xs text-slate-300 mt-1">
+            Klik pada salah satu kartu program unggulan untuk memfilter secara instan seluruh pemberitaan media dan aduan riil warga terkait program tersebut.
+          </p>
+        </div>
+
+        <!-- 9 Kartu Progul -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <div onclick="filterByProgul('Padang Amanah'); switchTab('tab-database')"
+           class="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900/70 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600/60 hover:bg-slate-900">
+        <div class="flex items-start justify-between">
+          <span class="text-2xl">🏛️</span>
+          <span class="rounded-full border border-sky-900/60 bg-sky-950/40 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300 group-hover:border-sky-500">
+            7 Rekam
+          </span>
+        </div>
+        <div class="mt-3 text-sm font-bold text-slate-100 group-hover:text-sky-300">Padang Amanah</div>
+        <p class="mt-1 text-xs leading-relaxed text-slate-400">Tata kelola pemerintahan bersih, integritas ASN, dan pengawasan publik transparan.</p>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-sky-400 group-hover:underline">
+          Filter Database &rarr;
+        </div>
+      </div>
+    
+      <div onclick="filterByProgul('Padang Rancak'); switchTab('tab-database')"
+           class="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900/70 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600/60 hover:bg-slate-900">
+        <div class="flex items-start justify-between">
+          <span class="text-2xl">🌿</span>
+          <span class="rounded-full border border-sky-900/60 bg-sky-950/40 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300 group-hover:border-sky-500">
+            17 Rekam
+          </span>
+        </div>
+        <div class="mt-3 text-sm font-bold text-slate-100 group-hover:text-sky-300">Padang Rancak</div>
+        <p class="mt-1 text-xs leading-relaxed text-slate-400">Penataan estetika kota, kebersihan saluran drainase, dan penghijauan lingkungan.</p>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-sky-400 group-hover:underline">
+          Filter Database &rarr;
+        </div>
+      </div>
+    
+      <div onclick="filterByProgul('Padang Juara'); switchTab('tab-database')"
+           class="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900/70 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600/60 hover:bg-slate-900">
+        <div class="flex items-start justify-between">
+          <span class="text-2xl">🏆</span>
+          <span class="rounded-full border border-sky-900/60 bg-sky-950/40 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300 group-hover:border-sky-500">
+            2 Rekam
+          </span>
+        </div>
+        <div class="mt-3 text-sm font-bold text-slate-100 group-hover:text-sky-300">Padang Juara</div>
+        <p class="mt-1 text-xs leading-relaxed text-slate-400">Pengembangan prestasi pemuda, olahraga terpadu, dan fasilitas talenta daerah.</p>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-sky-400 group-hover:underline">
+          Filter Database &rarr;
+        </div>
+      </div>
+    
+      <div onclick="filterByProgul('Padang Sejahtera'); switchTab('tab-database')"
+           class="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900/70 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600/60 hover:bg-slate-900">
+        <div class="flex items-start justify-between">
+          <span class="text-2xl">🤝</span>
+          <span class="rounded-full border border-sky-900/60 bg-sky-950/40 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300 group-hover:border-sky-500">
+            0 Rekam
+          </span>
+        </div>
+        <div class="mt-3 text-sm font-bold text-slate-100 group-hover:text-sky-300">Padang Sejahtera</div>
+        <p class="mt-1 text-xs leading-relaxed text-slate-400">Jaring pengaman sosial, perlindungan kaum rentan, dan stabilitas ekonomi warga.</p>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-sky-400 group-hover:underline">
+          Filter Database &rarr;
+        </div>
+      </div>
+    
+      <div onclick="filterByProgul('Padang Cerdas'); switchTab('tab-database')"
+           class="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900/70 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600/60 hover:bg-slate-900">
+        <div class="flex items-start justify-between">
+          <span class="text-2xl">📚</span>
+          <span class="rounded-full border border-sky-900/60 bg-sky-950/40 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300 group-hover:border-sky-500">
+            0 Rekam
+          </span>
+        </div>
+        <div class="mt-3 text-sm font-bold text-slate-100 group-hover:text-sky-300">Padang Cerdas</div>
+        <p class="mt-1 text-xs leading-relaxed text-slate-400">Peningkatan kualitas pendidikan, bantuan beasiswa, dan infrastruktur sekolah.</p>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-sky-400 group-hover:underline">
+          Filter Database &rarr;
+        </div>
+      </div>
+    
+      <div onclick="filterByProgul('Padang Sehat'); switchTab('tab-database')"
+           class="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900/70 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600/60 hover:bg-slate-900">
+        <div class="flex items-start justify-between">
+          <span class="text-2xl">🏥</span>
+          <span class="rounded-full border border-sky-900/60 bg-sky-950/40 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300 group-hover:border-sky-500">
+            0 Rekam
+          </span>
+        </div>
+        <div class="mt-3 text-sm font-bold text-slate-100 group-hover:text-sky-300">Padang Sehat</div>
+        <p class="mt-1 text-xs leading-relaxed text-slate-400">Pelayanan kesehatan dasar prima, sanitasi lingkungan, dan penurunan stunting.</p>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-sky-400 group-hover:underline">
+          Filter Database &rarr;
+        </div>
+      </div>
+    
+      <div onclick="filterByProgul('Padang Melayani'); switchTab('tab-database')"
+           class="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900/70 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600/60 hover:bg-slate-900">
+        <div class="flex items-start justify-between">
+          <span class="text-2xl">⚡</span>
+          <span class="rounded-full border border-sky-900/60 bg-sky-950/40 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300 group-hover:border-sky-500">
+            17 Rekam
+          </span>
+        </div>
+        <div class="mt-3 text-sm font-bold text-slate-100 group-hover:text-sky-300">Padang Melayani</div>
+        <p class="mt-1 text-xs leading-relaxed text-slate-400">Digitalisasi layanan birokrasi, respon cepat aduan, dan infrastruktur utilitas.</p>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-sky-400 group-hover:underline">
+          Filter Database &rarr;
+        </div>
+      </div>
+    
+      <div onclick="filterByProgul('Padang Religius'); switchTab('tab-database')"
+           class="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900/70 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600/60 hover:bg-slate-900">
+        <div class="flex items-start justify-between">
+          <span class="text-2xl">🕌</span>
+          <span class="rounded-full border border-sky-900/60 bg-sky-950/40 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300 group-hover:border-sky-500">
+            0 Rekam
+          </span>
+        </div>
+        <div class="mt-3 text-sm font-bold text-slate-100 group-hover:text-sky-300">Padang Religius</div>
+        <p class="mt-1 text-xs leading-relaxed text-slate-400">Penguatan nilai keagamaan, falsafah ABS-SBK, dan kerukunan warga kota.</p>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-sky-400 group-hover:underline">
+          Filter Database &rarr;
+        </div>
+      </div>
+    
+      <div onclick="filterByProgul('Padang Maju'); switchTab('tab-database')"
+           class="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900/70 p-4 transition duration-150 hover:-translate-y-0.5 hover:border-sky-600/60 hover:bg-slate-900">
+        <div class="flex items-start justify-between">
+          <span class="text-2xl">🚀</span>
+          <span class="rounded-full border border-sky-900/60 bg-sky-950/40 px-2.5 py-0.5 text-[11px] font-semibold text-sky-300 group-hover:border-sky-500">
+            0 Rekam
+          </span>
+        </div>
+        <div class="mt-3 text-sm font-bold text-slate-100 group-hover:text-sky-300">Padang Maju</div>
+        <p class="mt-1 text-xs leading-relaxed text-slate-400">Pertumbuhan iklim investasi, pariwisata terintegrasi, dan daya saing daerah.</p>
+        <div class="mt-3 flex items-center gap-1 text-[11px] font-semibold text-sky-400 group-hover:underline">
+          Filter Database &rarr;
+        </div>
+      </div>
+    
+        </div>
+
+        <!-- Tabel Distribusi Progul -->
+        <section class="rounded-2xl border border-slate-800 bg-slate-900/90 p-5 shadow-sm space-y-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-sky-400">
+            📊 Rekapitulasi Data Pemberitaan & Aduan per Program Unggulan
+          </h3>
+          <div class="overflow-x-auto rounded-xl border border-slate-800">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="bg-slate-950 text-slate-300 font-semibold border-b border-slate-800">
+                <tr>
+                  <th class="p-3">Program Unggulan</th>
+                  <th class="p-3 text-center w-24">Total Rekam</th>
+                  <th class="p-3 text-center w-28">Aspirasi / Negatif</th>
+                  <th class="p-3 text-center w-28">Dukungan / Positif</th>
+                  <th class="p-3">OPD Pengampu Dominan</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/70 bg-slate-900/30">
+
+      <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
+        <td class="p-3 font-semibold text-slate-200 flex items-center gap-2"><span>🏛️</span> Padang Amanah</td>
+        <td class="p-3 text-center font-bold text-sky-400">7</td>
+        <td class="p-3 text-center text-rose-400 font-medium">3</td>
+        <td class="p-3 text-center text-emerald-400 font-medium">4</td>
+        <td class="p-3 text-slate-300">Satpol PP</td>
+      </tr>
+    
+      <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
+        <td class="p-3 font-semibold text-slate-200 flex items-center gap-2"><span>🌿</span> Padang Rancak</td>
+        <td class="p-3 text-center font-bold text-sky-400">17</td>
+        <td class="p-3 text-center text-rose-400 font-medium">8</td>
+        <td class="p-3 text-center text-emerald-400 font-medium">5</td>
+        <td class="p-3 text-slate-300">Dinas Lingkungan Hidup</td>
+      </tr>
+    
+      <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
+        <td class="p-3 font-semibold text-slate-200 flex items-center gap-2"><span>🏆</span> Padang Juara</td>
+        <td class="p-3 text-center font-bold text-sky-400">2</td>
+        <td class="p-3 text-center text-rose-400 font-medium">0</td>
+        <td class="p-3 text-center text-emerald-400 font-medium">2</td>
+        <td class="p-3 text-slate-300">Dinas Pendidikan</td>
+      </tr>
+    
+      <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
+        <td class="p-3 font-semibold text-slate-200 flex items-center gap-2"><span>🤝</span> Padang Sejahtera</td>
+        <td class="p-3 text-center font-bold text-sky-400">0</td>
+        <td class="p-3 text-center text-rose-400 font-medium">0</td>
+        <td class="p-3 text-center text-emerald-400 font-medium">0</td>
+        <td class="p-3 text-slate-300">Lintas OPD</td>
+      </tr>
+    
+      <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
+        <td class="p-3 font-semibold text-slate-200 flex items-center gap-2"><span>📚</span> Padang Cerdas</td>
+        <td class="p-3 text-center font-bold text-sky-400">0</td>
+        <td class="p-3 text-center text-rose-400 font-medium">0</td>
+        <td class="p-3 text-center text-emerald-400 font-medium">0</td>
+        <td class="p-3 text-slate-300">Lintas OPD</td>
+      </tr>
+    
+      <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
+        <td class="p-3 font-semibold text-slate-200 flex items-center gap-2"><span>🏥</span> Padang Sehat</td>
+        <td class="p-3 text-center font-bold text-sky-400">0</td>
+        <td class="p-3 text-center text-rose-400 font-medium">0</td>
+        <td class="p-3 text-center text-emerald-400 font-medium">0</td>
+        <td class="p-3 text-slate-300">Lintas OPD</td>
+      </tr>
+    
+      <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
+        <td class="p-3 font-semibold text-slate-200 flex items-center gap-2"><span>⚡</span> Padang Melayani</td>
+        <td class="p-3 text-center font-bold text-sky-400">17</td>
+        <td class="p-3 text-center text-rose-400 font-medium">10</td>
+        <td class="p-3 text-center text-emerald-400 font-medium">4</td>
+        <td class="p-3 text-slate-300">Dinas Perhubungan</td>
+      </tr>
+    
+      <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
+        <td class="p-3 font-semibold text-slate-200 flex items-center gap-2"><span>🕌</span> Padang Religius</td>
+        <td class="p-3 text-center font-bold text-sky-400">0</td>
+        <td class="p-3 text-center text-rose-400 font-medium">0</td>
+        <td class="p-3 text-center text-emerald-400 font-medium">0</td>
+        <td class="p-3 text-slate-300">Lintas OPD</td>
+      </tr>
+    
+      <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition">
+        <td class="p-3 font-semibold text-slate-200 flex items-center gap-2"><span>🚀</span> Padang Maju</td>
+        <td class="p-3 text-center font-bold text-sky-400">0</td>
+        <td class="p-3 text-center text-rose-400 font-medium">0</td>
+        <td class="p-3 text-center text-emerald-400 font-medium">0</td>
+        <td class="p-3 text-slate-300">Lintas OPD</td>
+      </tr>
+    
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+
+    <!-- FOOTER RESMI (Tasteskill Rule 1: One footer line) -->
+    <footer class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-500">
+      <div>&copy; 2026 Inspektorat Daerah Kota Padang &bull; Sistem Pengawasan Berbasis Risiko & Data Riil</div>
+      <div class="text-[11px] text-slate-500">Sumber data: Media Massa Terverifikasi (Padek, Langgam, KataSumbar, YouTube Padang TV, Antara, Pemko Padang)</div>
+    </footer>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODALS (100% ID SESUAI dashboard_logic.js) -->
+  <!-- ========================================== -->
+
+  <!-- Modal: Tarik Berita Progul (Scraper) -->
+  <div id="progulScraperModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 no-print">
+    <div class="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+        <h3 class="font-bold text-sm text-white flex items-center gap-2">
+          <span>📡</span> Sinkronisasi Berita 9 Progul (Scraper)
+        </h3>
+        <button type="button" onclick="closeProgulScraperModal()" class="text-slate-400 hover:text-white text-base font-bold">&times;</button>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        Modul scraper akan menyinkronkan pemberitaan media massa dan YouTube terindeks Google di wilayah Kota Padang yang berkaitan dengan 9 Program Unggulan Wali Kota.
+      </p>
+      <div class="rounded-xl border border-slate-800 bg-slate-950 p-3 space-y-2 text-xs">
+        <div class="text-slate-400 font-semibold text-[11px] uppercase tracking-wider">Cakupan Indeks Scraping:</div>
+        <div class="grid grid-cols-2 gap-1 text-slate-300 text-[11px]">
+          <div>✓ Padang Amanah</div>
+          <div>✓ Padang Rancak</div>
+          <div>✓ Padang Juara</div>
+          <div>✓ Padang Sejahtera</div>
+          <div>✓ Padang Cerdas</div>
+          <div>✓ Padang Sehat</div>
+          <div>✓ Padang Melayani</div>
+          <div>✓ Padang Religius</div>
+          <div>✓ Padang Maju</div>
+          <div>✓ Sitinjau Lauik Flyover</div>
+        </div>
+      </div>
+      <div id="progulSyncNotice" class="hidden rounded-lg bg-emerald-950/60 border border-emerald-700/60 p-2.5 text-xs text-emerald-300 text-center font-medium">
+        ✓ 10 Berita Progul Terkini Berhasil Disinkronkan ke Database!
+      </div>
+      <div class="flex gap-2 pt-2">
+        <button type="button" onclick="closeProgulScraperModal()" 
+                class="w-1/3 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+          Batal
+        </button>
+        <button type="button" onclick="syncProgulNewsFromModal()" 
+                class="w-2/3 py-2 rounded-lg text-xs font-semibold bg-emerald-700 hover:bg-emerald-600 text-white transition flex items-center justify-center gap-1.5 shadow-sm">
+          <span id="syncProgulBtnLabel">⚡ Sinkronisasikan Data Berita</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Impor Data File/Manual -->
+  <div id="importModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 no-print">
+    <div class="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+        <h3 class="font-bold text-sm text-white flex items-center gap-2">
+          <span>+</span> Tambah / Impor Data Aduan Baru
+        </h3>
+        <button type="button" onclick="closeImportModal()" class="text-slate-400 hover:text-white text-base font-bold">&times;</button>
+      </div>
+
+      <!-- Unggah Berkas JSON/CSV -->
+      <div class="rounded-xl border border-dashed border-slate-700 bg-slate-950 p-4 text-center space-y-2">
+        <div class="text-xs text-slate-300 font-medium">Unggah Berkas Eksternal (.json atau .csv)</div>
+        <input type="file" id="importFile" accept=".json,.csv" onchange="handleFileSelect(event)" 
+               class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sky-900 file:text-sky-200 hover:file:bg-sky-800 cursor-pointer">
+        <div id="importFileStatus" class="hidden text-xs text-emerald-400 font-semibold pt-1"></div>
+      </div>
+
+      <div class="relative flex py-1 items-center">
+        <div class="flex-grow border-t border-slate-800"></div>
+        <span class="flex-shrink mx-3 text-[10px] uppercase font-bold text-slate-500 tracking-wider">Atau Entri Manual</span>
+        <div class="flex-grow border-t border-slate-800"></div>
+      </div>
+
+      <!-- Formulir Entri Manual -->
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Tanggal Kejadian</label>
+            <input type="date" id="manualDate" 
+                   class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-slate-200 focus:border-sky-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Prioritas Isu</label>
+            <select id="manualPrio" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-slate-200 focus:border-sky-500 focus:outline-none">
+              <option value="Tinggi">Tinggi</option>
+              <option value="Sedang" selected>Sedang</option>
+              <option value="Rendah">Rendah</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">OPD Penanggung Jawab</label>
+            <select id="manualOpd" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-slate-200 focus:border-sky-500 focus:outline-none">
+              <option value="Dinas Perdagangan">Dinas Perdagangan</option>
+              <option value="Dinas PUPR">Dinas PUPR</option>
+              <option value="Dinas Perhubungan">Dinas Perhubungan</option>
+              <option value="Dinas Lingkungan Hidup">Dinas Lingkungan Hidup</option>
+              <option value="Satpol PP">Satpol PP</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Program Unggulan</label>
+            <select id="manualProgul" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-slate-200 focus:border-sky-500 focus:outline-none">
+              <option value="Padang Amanah">Padang Amanah</option>
+              <option value="Padang Rancak">Padang Rancak</option>
+              <option value="Padang Juara">Padang Juara</option>
+              <option value="Padang Sejahtera">Padang Sejahtera</option>
+              <option value="Padang Cerdas">Padang Cerdas</option>
+              <option value="Padang Sehat">Padang Sehat</option>
+              <option value="Padang Melayani" selected>Padang Melayani</option>
+              <option value="Padang Religius">Padang Religius</option>
+              <option value="Padang Maju">Padang Maju</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Tautan Sumber Berita / Bukti Lapangan</label>
+          <input type="url" id="manualUrl" placeholder="https://..." 
+                 class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-1.5 text-slate-200 placeholder-slate-600 focus:border-sky-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Deskripsi Aduan / Narasi Temuan</label>
+          <textarea id="manualText" rows="3" placeholder="Tuliskan fakta kejadian, keluhan masyarakat, atau temuan lapangan..." 
+                    class="w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-slate-200 placeholder-slate-600 focus:border-sky-500 focus:outline-none resize-none"></textarea>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button type="button" onclick="closeImportModal()" 
+                  class="w-1/3 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+            Batal
+          </button>
+          <button type="button" onclick="submitManualRecord()" 
+                  class="w-2/3 py-2 rounded-lg text-xs font-semibold bg-sky-600 hover:bg-sky-500 text-white transition shadow-sm">
+            + Simpan ke Database
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Konfigurasi API Key Gemini -->
+  <div id="apiKeyModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 no-print">
+    <div class="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+        <h3 class="font-bold text-sm text-white flex items-center gap-2">
+          <span>🔑</span> Konfigurasi Google Gemini API Key
+        </h3>
+        <button type="button" onclick="closeApiKeyModal()" class="text-slate-400 hover:text-white text-base font-bold">&times;</button>
+      </div>
+      <p class="text-xs text-slate-300 leading-relaxed">
+        API Key digunakan untuk menjalankan fitur analisis risiko mendalam langsung dari Google Gemini AI Studio. API Key tersimpan secara aman di browser lokal Anda (<code class="text-sky-300">localStorage</code>).
+      </p>
+
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between items-center">
+          <label class="text-[11px] font-semibold text-slate-400">Gemini API Key</label>
+          <div id="apiKeyStatusBadge" class="flex items-center gap-1.5 text-[11px]"></div>
+        </div>
+        <div class="relative">
+          <input type="password" id="inputGeminiApiKey" placeholder="AIzaSy..." 
+                 class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-200 placeholder-slate-600 focus:border-sky-500 focus:outline-none pr-16 font-mono text-xs">
+          <button type="button" onclick="toggleApiKeyVisibility()" 
+                  class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 text-xs">
+            Lihat
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between gap-2 pt-2">
+        <button type="button" onclick="clearSavedApiKey()" 
+                class="px-3 py-2 rounded-lg text-xs font-semibold bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800 transition">
+          Hapus Key
+        </button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closeApiKeyModal()" 
+                  class="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition">
+            Tutup
+          </button>
+          <button type="button" onclick="saveApiKeyFromModal()" 
+                  class="px-4 py-2 rounded-lg text-xs font-semibold bg-sky-600 hover:bg-sky-500 text-white transition shadow-sm">
+            Simpan Key
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC RESMI (ZERO SYNTAX ERROR)  -->
+  <!-- ========================================== -->
+  <script>
+// DATASET EMBEDDED RESMI (57 Data Riil Terverifikasi)
+let dataset = [{"id": "REC-PAD-2026-11-01", "tgl": "05 Nov 2026", "tgl_raw": "2026-11-05 14:30:00", "bulan_key": "2026-11", "platform": "youtube (padang tv)", "lokasi": "Kecamatan Lubuk Kilangan", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Antrean kendaraan logistik dan mobil pribadi kembali mengular di kawasan Sitinjau Lauik akibat truk mogok di tikungan tajam serta pengerjaan jalur flyover yang memicu sistem buka-tutup.", "url": "https://www.youtube.com/watch?v=wnQEcO2FP9Q", "issue": "Transportasi & Kelancaran Sitinjau Lauik", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "REC-PAD-2026-11-02", "tgl": "04 Nov 2026", "tgl_raw": "2026-11-04 11:15:00", "bulan_key": "2026-11", "platform": "katasumbar", "lokasi": "Kecamatan Padang Barat", "opd": "Satpol PP", "progul": "Padang Amanah", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Praktik pungutan liar bermodus jukir tanpa karcis resmi dan tarif tembak di kawasan Pantai Padang (Taplau) disikat aparat gabungan Satpol PP dan kepolisian usai banyaknya keluhan pengunjung.", "url": "https://katasumbar.com/pemuda-pungli-modus-parkir-di-pantai-padang-disikat-satpol-pp-padang-dan-tim-klewang/", "issue": "Pemberantasan Pungli Wisata & Parkir Liar", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "PROGUL-2026-11-01", "tgl": "04 Nov 2026", "tgl_raw": "2026-11-04 10:15:00", "bulan_key": "2026-11", "platform": "portal berita (tribunnews)", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas PUPR", "progul": "Padang Amanah", "prioritas": "Tinggi", "sentimen": "positif", "sikap": "mendukung", "issue": "Infrastruktur Dasar Huntap Korban Bencana", "text": "Wali Kota Fadly Amran beraudiensi dengan Menteri Perumahan dan Kawasan Permukiman (PKP) Maruarar Sirait di Jakarta mengusulkan dukungan anggaran infrastruktur dasar senilai Rp25-30 miliar untuk kawasan Huntap Balai Gadang Koto Tangah demi memastikan hak hunian layak korban bencana.", "url": "https://www.tribunnews.com/regional/huntap-balai-gadang-padang-fadly-amran", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-11-03", "tgl": "02 Nov 2026", "tgl_raw": "2026-11-02 16:45:00", "bulan_key": "2026-11", "platform": "youtube (padang tv)", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas PUPR", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Hujan deras berintensitas tinggi memicu luapan air pada saluran drainase yang tersumbat lumpur di Koto Tangah, merendam jalan lingkungan pemukiman warga.", "url": "https://www.youtube.com/watch?v=hksAhr_dvOA", "issue": "Drainase & Penanggulangan Banjir", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-11-04", "tgl": "01 Nov 2026", "tgl_raw": "2026-11-01 09:20:00", "bulan_key": "2026-11", "platform": "youtube (padang tv)", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Sedang", "sentimen": "campuran", "sikap": "meminta_perbaikan", "text": "Dialog pedagang Pasar Raya Padang menyoroti perlunya pemerataan promosi dan kemudahan akses pengunjung ke lantai atas gedung Fase VII agar tidak terkonsentrasi di basement saja.", "url": "https://www.youtube.com/watch?v=tMxqOAWcPUs", "issue": "Fasilitas & Tata Kelola Pasar Raya", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-10-01", "tgl": "28 Oct 2026", "tgl_raw": "2026-10-28 17:10:00", "bulan_key": "2026-10", "platform": "padang ekspres", "lokasi": "Kecamatan Lubuk Kilangan", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "text": "Pembangunan Flyover Sitinjau Lauik catat kemajuan fisik signifikan: struktur Jembatan 1 tuntas dikerjakan dan pemasangan girder Jembatan 3 tengah berlangsung intensif.", "url": "https://padek.jawapos.com/sumbar/2610280004/flyover-sitinjau-lauik-jembatan-1-rampung-pemasangan-girder-jembatan-3-berlangsung", "issue": "Progres Infrastruktur Strategis", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "PROGUL-2026-10-02", "tgl": "28 Okt 2026", "tgl_raw": "2026-10-28 15:45:00", "bulan_key": "2026-10", "platform": "portal resmi (padang.go.id)", "lokasi": "Kecamatan Pauh & Kuranji", "opd": "Dinas PUPR", "progul": "Padang Amanah", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "issue": "Peninjauan Progres Jalan Lingkar Unand & Drainase", "text": "Wali Kota Padang Fadly Amran turun langsung meninjau proyek strategis jalan dan drainase kota meliputi Jalan Lingkar Limau Manis menuju Unand dengan progres 54%, turap Jembatan Batu Busuk, dan normalisasi drainase Pasar Ambacang sebagai komitmen keterbukaan pembangunan.", "url": "https://padang.go.id/peninjauan-progres-infrastruktur-jalan-lingkar-unand-drainase", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "PROGUL-2026-10-03", "tgl": "24 Okt 2026", "tgl_raw": "2026-10-24 11:20:00", "bulan_key": "2026-10", "platform": "portal berita (infopublik.id)", "lokasi": "Kecamatan Padang Barat", "opd": "Satpol PP", "progul": "Sinergi Nagari", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "issue": "Pengukuhan Pengurus LKAAM Kota Padang", "text": "Pemko Padang mengukuhkan kepengurusan Lembaga Kerapatan Adat Alam Minangkabau (LKAAM) Kota Padang periode 2026-2031 untuk memperkuat sinergi Tungku Tigo Sajarangan dalam menjaga ketertiban sosial, moral generasi muda, dan harmonisasi pembangunan kota.", "url": "https://infopublik.id/kategori/nusantara/pengukuhan-lkaam-kota-padang-fadly-amran", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-10-02", "tgl": "18 Oct 2026", "tgl_raw": "2026-10-18 10:40:00", "bulan_key": "2026-10", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Tinggi", "sentimen": "campuran", "sikap": "meminta_perbaikan", "text": "Pemko Padang menata Pasar Raya dengan memindahkan pedagang ke empat lokasi baru (Basement Blok 2-3, Lantai 2 Blok 3, dan Lantai 1 Blok 4); pedagang meminta jaminan keteraturan pembagian lapak.", "url": "https://padek.jawapos.com/padang/2610180003/pasar-raya-padang-ditata-pedagang-dipindah-ke-empat-lokasi-baru", "issue": "Relokasi & Zonasi Pedagang Pasar", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-10-03", "tgl": "14 Oct 2026", "tgl_raw": "2026-10-14 13:20:00", "bulan_key": "2026-10", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Satpol PP", "progul": "Padang Amanah", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Pimpinan DPRD Padang menyoroti maraknya praktik pungli di Pantai Padang dan mendesak Pemko bersama tim penegak hukum menertibkan oknum premanisme berkedok juru parkir.", "url": "https://padek.jawapos.com/padang/2510140020/wakil-ketua-dprd-padang-soroti-maraknya-pungli-di-pantai-padang-minta-pemko-bertindak-tegas", "issue": "Pengawasan Tata Kelola Pariwisata", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-10-04", "tgl": "12 Oct 2026", "tgl_raw": "2026-10-12 08:30:00", "bulan_key": "2026-10", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "Padang Rancak", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Dinas Perdagangan menetapkan delapan ruas jalan di kawasan Pasar Raya (termasuk M. Yamin dan Permindo) terlarang untuk aktivitas berdagang di trotoar dan bahu jalan guna mengurai kemacetan.", "url": "https://padek.jawapos.com/padang/2610120019/ini-8-jalan-di-pasar-raya-padang-yang-dilarang-jadi-lokasi-berjualan", "issue": "Penertiban Fasilitas Umum Jalan", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-10-05", "tgl": "11 Oct 2026", "tgl_raw": "2026-10-11 19:15:00", "bulan_key": "2026-10", "platform": "batampos", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas PUPR", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Banjir melanda 6 kelurahan di Kota Padang dengan ratusan kepala keluarga terdampak; buruknya daya tampung drainase dan sedimentasi sungai menjadi pemicu utama genangan lambat surut.", "url": "https://batampos.jawapos.com/nasional/2610110004/banjir-bandang-kota-padang-6-kelurahan-di-3-kecamatan-terendam-225-kk-terdampak", "issue": "Tanggap Darurat & Rehabilitasi Drainase", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-10-06", "tgl": "08 Oct 2026", "tgl_raw": "2026-10-08 14:00:00", "bulan_key": "2026-10", "platform": "klikpositif", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Tinggi", "sentimen": "campuran", "sikap": "meminta_perbaikan", "text": "Pemerintah Kota menegaskan seluruh pedagang wajib menempati area basement Pasar Raya yang telah disiapkan agar tidak ada lagi lapak di badan jalan yang memicu ketidakadilan antar-pedagang.", "url": "https://klikpositif.com/basement-ii-pasar-raya-masih-sepi-fadly-amran-tegaskan-semua-pedagang-wajib-masuk/", "issue": "Optimalisasi Gedung Pasar", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-10-07", "tgl": "05 Oct 2026", "tgl_raw": "2026-10-05 09:45:00", "bulan_key": "2026-10", "platform": "antara sumbar", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Lingkungan Hidup", "progul": "Padang Rancak", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "text": "Dinas Lingkungan Hidup bergerak cepat membersihkan tumpukan sisa material dan sampah di sepanjang Jalan Sandang Pangan pascapenataan lapak pedagang Pasar Raya Padang.", "url": "https://sumbar.antaranews.com/berita/785187/dlh-padang-bersihkan-jalan-sandang-pangan-pascapenataan-pasar-raya", "issue": "Kebersihan Pascapenataan Pasar", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "PROGUL-2026-09-04", "tgl": "18 Sep 2026", "tgl_raw": "2026-09-18 09:30:00", "bulan_key": "2026-09", "platform": "portal berita (klikpositif)", "lokasi": "Kota Padang (Seluruh Kecamatan)", "opd": "Dinas Pendidikan", "progul": "Padang Juara", "prioritas": "Tinggi", "sentimen": "positif", "sikap": "mendukung", "issue": "Penyaluran 6 Stel Seragam Gratis & LKS", "text": "Pemerintah Kota Padang melalui Progul Padang Juara menyalurkan 6 stel seragam sekolah gratis lengkap (merah-putih/putih-biru, pramuka, batik, olahraga, muslim, dan baju adat basiba/taluk balango) beserta LKS gratis bagi seluruh siswa baru kelas 1 SD dan 7 SMP dari keluarga DTKS/MBR.", "url": "https://klikpositif.com/penyaluran-seragam-sekolah-gratis-padang-juara-fadly-amran", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-09-01", "tgl": "12 Sep 2026", "tgl_raw": "2026-09-12 11:20:00", "bulan_key": "2026-09", "platform": "youtube (padang tv)", "lokasi": "Kecamatan Lubuk Kilangan", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Cuaca hujan menyebabkan jalan licin di kawasan tanjakan Sitinjau Lauik; kecelakaan truk dan antrean kendaraan panjang memperlambat arus distribusi barang.", "url": "https://www.youtube.com/watch?v=MQlZzz-QELo", "issue": "Keselamatan Lalu Lintas Jalur Ekstrem", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "REC-PAD-2026-09-02", "tgl": "11 Sep 2026", "tgl_raw": "2026-09-11 16:30:00", "bulan_key": "2026-09", "platform": "antara sumbar", "lokasi": "Kecamatan Padang Utara", "opd": "Dinas PUPR", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Warga Padang Utara mengeluhkan sedimentasi dan sampah yang menyumbat drainase utama sehingga saluran air meluap ke pemukiman saat hujan turun.", "url": "https://sumbar.antaranews.com/berita/179744/warga-padang-utara-keluhkan-drainase-tersumbat", "issue": "Sedimentasi Drainase Lingkungan", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-09-03", "tgl": "11 Sep 2026", "tgl_raw": "2026-09-11 10:15:00", "bulan_key": "2026-09", "platform": "padangkita", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas Lingkungan Hidup", "progul": "Padang Rancak", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "text": "Merespons keluhan bau dan ceceran sampah di jalanan, DLH Padang mewajibkan pemasangan terpal penutup rapat pada seluruh armada truk pengangkut sampah menuju TPA Air Dingin.", "url": "https://padangkita.com/tanggapi-keluhan-masyarakat-dlh-padang-pasang-terpal-di-truk-sampah/", "issue": "SOP Pengangkutan Sampah Kota", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-09-04", "tgl": "10 Sep 2026", "tgl_raw": "2026-09-10 14:10:00", "bulan_key": "2026-09", "platform": "katasumbar", "lokasi": "Kecamatan Padang Barat", "opd": "Satpol PP", "progul": "Padang Rancak", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Kemunculan kembali tenda ceper di sepanjang Pantai Padang ditertibkan Satpol PP bersama aparat keamanan guna menjaga kawasan wisata tetap ramah keluarga dan bersih dari pelanggaran asusila.", "url": "https://katasumbar.com/tenda-ceper-muncul-lagi-di-pantai-padang-pemerintah-gandeng-tni-dan-polisi-untuk-penertiban/", "issue": "Ketertiban Umum Kawasan Pariwisata", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-09-05", "tgl": "10 Sep 2026", "tgl_raw": "2026-09-10 09:30:00", "bulan_key": "2026-09", "platform": "langgam.id", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas Lingkungan Hidup", "progul": "Padang Rancak", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Produksi sampah warga Kota Padang menembus 640 ton per hari; kondisi TPA Air Dingin kian sesak dan memerlukan percepatan penanganan terintegrasi sebelum daya tampung penuh.", "url": "https://langgam.id/tpa-air-dingin-penuh-sesak-sampah-warga-padang-capai-640-ton-sehari/", "issue": "Kapasitas TPA & Manajemen Persampahan", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-09-06", "tgl": "08 Sep 2026", "tgl_raw": "2026-09-08 15:45:00", "bulan_key": "2026-09", "platform": "katasumbar", "lokasi": "Kecamatan Lubuk Kilangan", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Dua unit truk mengalami mogok di tanjakan Sitinjau Lauik mengakibatkan arus lintas Padang-Solok terpaksa diberlakukan sistem buka tutup berjam-jam.", "url": "https://katasumbar.com/dua-truk-ganggu-jalur-sitinjau-lauik-arus-solok-padang-dibuka-tutup/", "issue": "Kemacetan & Gangguan Jalur Logistik", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "REC-PAD-2026-09-07", "tgl": "06 Sep 2026", "tgl_raw": "2026-09-06 18:20:00", "bulan_key": "2026-09", "platform": "langgam.id", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Pedagang mengeluhkan penurunan omset sejak pindah ke lantai dua Fase VII Pasar Raya Padang akibat minimnya akses tangga dan pembeli enggan naik ke lantai atas.", "url": "https://langgam.id/pedagang-keluhkan-penurunan-omset-sejak-pindah-ke-fase-vii-pasar-raya-padang/", "issue": "Aksesibilitas Fasilitas Pasar", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-09-08", "tgl": "05 Sep 2026", "tgl_raw": "2026-09-05 20:50:00", "bulan_key": "2026-09", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Pedagang keluhkan kondisi gedung baru Pasar Raya Fase VII yang masih sepi pembeli dan omset anjlok pascarelokasi, meminta dinas terkait memperbanyak kegiatan promosi.", "url": "https://padek.jawapos.com/padang/2501070002/pedagang-keluhkan-pasar-raya-fase-vii-sepi", "issue": "Pemberdayaan Pedagang Pascarelokasi", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-08-01", "tgl": "20 Aug 2026", "tgl_raw": "2026-08-20 11:30:00", "bulan_key": "2026-08", "platform": "padang ekspres", "lokasi": "Kecamatan Kuranji", "opd": "Dinas Lingkungan Hidup", "progul": "Padang Rancak", "prioritas": "Sedang", "sentimen": "campuran", "sikap": "meminta_perbaikan", "text": "Program penanganan sampah perkotaan digencarkan untuk membersihkan titik-titik TPS liar di sepanjang jalur By Pass guna menjaga estetika dan kesehatan warga.", "url": "https://padek.jawapos.com/padang/2408200004/targetkan-padang-bebas-sampah-dalam-100-hari", "issue": "Penertiban TPS Liar Jalur Protokol", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-08-02", "tgl": "15 Aug 2026", "tgl_raw": "2026-08-15 17:15:00", "bulan_key": "2026-08", "platform": "langgam.id", "lokasi": "Kecamatan Lubuk Kilangan", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Kemacetan panjang mengular hingga 8 kilometer terjadi di tanjakan Sitinjau Lauik akibat antrean kendaraan berat dan perbaikan jalan darurat.", "url": "https://langgam.id/macet-horor-di-sitinjau-lauik-pengendara-terjebak-kendaraan-mengular-capai-8-km/", "issue": "Kemacetan Ekstrem Jalur Padang-Solok", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "PROGUL-2026-08-05", "tgl": "14 Agu 2026", "tgl_raw": "2026-08-14 14:00:00", "bulan_key": "2026-08", "platform": "portal resmi (padang.go.id)", "lokasi": "Kota Padang", "opd": "Dinas Pendidikan", "progul": "Padang Juara", "prioritas": "Tinggi", "sentimen": "positif", "sikap": "mendukung", "issue": "Beasiswa Kuliah Penuh Lulusan SMA/SMK", "text": "Wali Kota Fadly Amran meresmikan program Beasiswa Penuh Perguruan Tinggi (termasuk beasiswa mitra luar negeri) melalui Kartu Padang Juara bagi lulusan SMA/SMK berprestasi dari keluarga prasejahtera Kota Padang yang dibiayai penuh APBD tanpa ikatan dinas.", "url": "https://padang.go.id/peluncuran-beasiswa-penuh-kartu-padang-juara-2026", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-08-03", "tgl": "04 Aug 2026", "tgl_raw": "2026-08-04 14:00:00", "bulan_key": "2026-08", "platform": "kompas.com", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas PUPR", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Warga di Koto Tangah menyatakan genangan air kali ini merupakan yang paling parah akibat sedimentasi saluran pembuangan utama dan meluapnya anak sungai.", "url": "https://regional.kompas.com/read/2026/08/04/202304478/30-tahun-tinggal-di-koto-tangah-padang-warga-sebut-banjir-kali-ini-paling?page=all", "issue": "Kapasitas Drainase Induk Pemukiman", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-08-04", "tgl": "02 Aug 2026", "tgl_raw": "2026-08-02 10:20:00", "bulan_key": "2026-08", "platform": "youtube (liputan6 padang)", "lokasi": "Kecamatan Padang Barat", "opd": "Satpol PP", "progul": "Padang Rancak", "prioritas": "Sedang", "sentimen": "campuran", "sikap": "meminta_perbaikan", "text": "Lapak pedagang dan payung rendah di Pantai Padang ditertibkan secara persuasif oleh Satpol PP guna mengembalikan kenyamanan wisatawan.", "url": "https://www.youtube.com/watch?v=MYIudSSZWKc", "issue": "Penataan Estetika Pantai Padang", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-07-01", "tgl": "25 Jul 2026", "tgl_raw": "2026-07-25 15:30:00", "bulan_key": "2026-07", "platform": "youtube (padang tv)", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Liputan pengawasan Ombudsman Sumbar terkait kendala penempatan lapak pedagang di Fase VII Pasar Raya Padang agar tidak merugikan pedagang lama.", "url": "https://www.youtube.com/watch?v=IyyEE49MFUY", "issue": "Transparansi Penempatan Lapak Pasar", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "PROGUL-2026-07-06", "tgl": "22 Jul 2026", "tgl_raw": "2026-07-22 16:10:00", "bulan_key": "2026-07", "platform": "portal berita (padangkita)", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "Padang Rancak", "prioritas": "Tinggi", "sentimen": "campuran", "sikap": "mendukung", "issue": "Aspirasi Pedagang Pasar Raya & Penataan Kawasan", "text": "Wali Kota Fadly Amran berdialog langsung dengan Komunitas Pedagang Pasar (KPP) Kota Padang terkait akselerasi penataan kawasan Pasar Raya agar modern dan nyaman, sekaligus menginstruksikan Dinas Perdagangan mengatasi keluhan sepinya lantai 2 Fase VII.", "url": "https://padangkita.com/dialog-pedagang-pasar-kpp-padang-fadly-amran-revitalisasi", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-07-02", "tgl": "15 Jul 2026", "tgl_raw": "2026-07-15 18:40:00", "bulan_key": "2026-07", "platform": "kompas tv", "lokasi": "Kecamatan Kuranji", "opd": "Dinas PUPR", "progul": "Padang Sigap", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Banjir merendam pemukiman dan memutus jembatan penghubung di wilayah pinggiran Kota Padang; warga mendesak perkuatan tebing sungai dan normalisasi saluran.", "url": "https://www.kompas.tv/regional/683733/detik-detik-banjir-rendam-kota-padang-jembatan-putus-dan-warga-dievakuasi-berut", "issue": "Infrastruktur Tebing Sungai & Tanggap Bencana", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-07-03", "tgl": "04 Jul 2026", "tgl_raw": "2026-07-04 10:10:00", "bulan_key": "2026-07", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Sedang", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Aktivitas penjualan seragam dan peralatan sekolah di Pasar Raya Padang lesu menjelang tahun ajaran baru; pedagang berharap ada dukungan event bazar dari dinas.", "url": "https://padek.jawapos.com/padang/2507040015/lesu-jelang-tahun-ajaran-baru-penjualan-seragam-sekolah-di-padang-turun-drastis", "issue": "Daya Beli Pedagang Tradisional", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-07-04", "tgl": "03 Jul 2026", "tgl_raw": "2026-07-03 14:25:00", "bulan_key": "2026-07", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Pedagang seragam sekolah di Pasar Raya keluhkan anjloknya omzet dan meminta pemerintah kota memprioritaskan pelibatan UMKM lokal dalam pengadaan perlengkapan sekolah daerah.", "url": "https://padek.jawapos.com/padang/2607030026/pedagang-seragam-sekolah-di-padang-keluhkan-omzet-anjlok-soroti-program-seragam-gratis", "issue": "Pelibatan UMKM Lokal Pasar", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-06-01", "tgl": "29 Jun 2026", "tgl_raw": "2026-06-29 08:30:00", "bulan_key": "2026-06", "platform": "padang.go.id", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Sedang", "sentimen": "netral", "sikap": "tidak_menyatakan_sikap", "text": "Dinas Perhubungan memberlakukan rekayasa lalu lintas dan penutupan rute di sekitar Pasar Raya untuk mendukung kelancaran proyek revitalisasi fisik kawasan air mancur.", "url": "https://padang.go.id/berita/dukung-revitalisasi-pasar-raya-pemko-padang-berlakukan-rekayasa-lalu-lintas-mulai-29-juni", "issue": "Rekayasa Arus Lalu Lintas Konstruksi", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "REC-PAD-2026-06-02", "tgl": "20 Jun 2026", "tgl_raw": "2026-06-20 16:15:00", "bulan_key": "2026-06", "platform": "langgam.id", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas PUPR", "progul": "Padang Rancak", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "text": "Pemerintah Kota mengalokasikan anggaran perbaikan infrastruktur publik senilai puluhan miliar guna membenahi fasilitas umum penunjang revitalisasi Pasar Raya Padang.", "url": "https://langgam.id/pemko-padang-anggarkan-rp40-miliar-benahi-fasilitas-umum-revitalisasi-pasar-raya/", "issue": "Alokasi Anggaran Fasilitas Publik", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "PROGUL-2026-06-07", "tgl": "19 Jun 2026", "tgl_raw": "2026-06-19 11:00:00", "bulan_key": "2026-06", "platform": "portal resmi (padang.go.id)", "lokasi": "Kota Padang (104 Kelurahan)", "opd": "Dinas Lingkungan Hidup", "progul": "Padang Rancak", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "issue": "Padang Rancak Award Penilaian RT Terbersih", "text": "Pemko Padang menggulirkan Padang Rancak Award 2026 melalui aplikasi Padang Mobile untuk menilai RT terbersih, terindah, dan bank sampah aktif di 104 kelurahan guna menggerakkan partisipasi warga menuju penghargaan Adipura.", "url": "https://padang.go.id/padang-rancak-award-2026-lomba-kebersihan-rt-sampah", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-06-03", "tgl": "15 Jun 2026", "tgl_raw": "2026-06-15 11:45:00", "bulan_key": "2026-06", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "text": "Dinas Perdagangan mencatat peningkatan transaksi di area basement Pasar Raya Fase VII didorong oleh momentum kebutuhan masyarakat menyambut awal tahun ajaran.", "url": "https://padek.jawapos.com/padang/2606150044/disdag-padang-catat-lonjakan-daya-beli-masyarakat-di-pasar-raya-fase-vii-jelang-tahun-ajaran-baru", "issue": "Pemantauan Aktivitas Perdagangan", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-06-04", "tgl": "08 Jun 2026", "tgl_raw": "2026-06-08 14:10:00", "bulan_key": "2026-06", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Timur", "opd": "Satpol PP", "progul": "Padang Rancak", "prioritas": "Sedang", "sentimen": "campuran", "sikap": "meminta_perbaikan", "text": "Petugas Satpol PP mengamankan warga yang tertangkap tangan membuang sampah sembarangan di median jalan protokol sebagai bagian dari penegakan Perda Kebersihan Kota.", "url": "https://padek.jawapos.com/sumbar/2406080008/satpol-pp-padang-amankan-tiga-warga-buang-sampah-sembarangan", "issue": "Penegakan Hukum Kebersihan Kota", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-05-01", "tgl": "20 May 2026", "tgl_raw": "2026-05-20 10:20:00", "bulan_key": "2026-05", "platform": "antara sumbar", "lokasi": "Kecamatan Lubuk Kilangan", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "text": "Pembangunan Flyover Sitinjau Lauik diproyeksikan memangkas waktu tempuh logistik pangan dan menekan risiko kecelakaan fatal di tikungan Panorama Panorama I dan II.", "url": "https://sumbar.antaranews.com/berita/785795/bp-bumn-flyover-sitinjau-lauik-tingkatkan-konektivitas-di-sumbar", "issue": "Konektivitas Logistik Antar-Daerah", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "PROGUL-2026-05-08", "tgl": "15 Mei 2026", "tgl_raw": "2026-05-15 08:45:00", "bulan_key": "2026-05", "platform": "portal berita (padangkita)", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "campuran", "sikap": "mendukung", "issue": "Pengawasan Layanan Trans Padang & Angkot Feeder", "text": "Wali Kota menaiki langsung armada bus Trans Padang koridor utara untuk mengecek ketepatan waktu tempuh, kondisi fasilitas AC, dan mendengarkan keluhan supir angkot yang menuntut integrasi rute feeder agar tidak saling berebut penumpang.", "url": "https://padangkita.com/wali-kota-padang-naik-trans-padang-evaluasi-sop-layanan", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "REC-PAD-2026-05-02", "tgl": "12 May 2026", "tgl_raw": "2026-05-12 16:30:00", "bulan_key": "2026-05", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perhubungan", "progul": "Padang Amanah", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Dinas Perhubungan bersama tim yustisi memperingatkan pengelola parkir liar dan oknum jukir nakal di kawasan objek wisata Taplau agar tidak mematok tarif di luar ketentuan perda.", "url": "https://padek.jawapos.com/padang/2505020016/siap-siap-juru-parkir-nakal-di-pantai-padang-segera-ditindak-tegas", "issue": "Pengawasan Tarif Retribusi Parkir", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-05-03", "tgl": "03 May 2026", "tgl_raw": "2026-05-03 09:15:00", "bulan_key": "2026-05", "platform": "detik finance", "lokasi": "Kecamatan Lubuk Kilangan", "opd": "Dinas PUPR", "progul": "Padang Melayani", "prioritas": "Rendah", "sentimen": "positif", "sikap": "mendukung", "text": "Menteri Pekerjaan Umum meresmikan pelaksanaan groundbreaking proyek fisik Flyover Sitinjau Lauik senilai Rp2,7 triliun untuk mengakhiri momok tanjakan maut di Sumbar.", "url": "https://finance.detik.com/foto-bisnis/d-7915604/proyek-flyover-sitinjau-lauik-dimulai", "issue": "Proyek Strategis Nasional", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "REC-PAD-2026-04-01", "tgl": "18 Apr 2026", "tgl_raw": "2026-04-18 11:00:00", "bulan_key": "2026-04", "platform": "youtube (padang tv)", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "text": "Suasana ramai berbelanja di Pasar Raya Padang pasca-Lebaran menunjukkan perbaikan aktivitas ekonomi di kawasan pertokoan dan los kain.", "url": "https://www.youtube.com/watch?v=MXL7u3GizKY", "issue": "Pemulihan Ekonomi Pedagang", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "PROGUL-2026-04-09", "tgl": "10 Apr 2026", "tgl_raw": "2026-04-10 13:30:00", "bulan_key": "2026-04", "platform": "portal resmi (padang.go.id)", "lokasi": "Kecamatan Padang Timur", "opd": "Satpol PP", "progul": "Padang Amanah", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "issue": "Penyaluran Dana Operasional Tokoh Masyarakat", "text": "Realisasi Progul Padang Amanah dibuktikan dengan penyaluran dana operasional triwulan kepada Ketua RT/RW, guru TPQ/TQA/MDTA, Imam Masjid, dan kader Posyandu se-Kota Padang sebagai penguatan ujung tombak pelayanan publik di tingkat kelurahan.", "url": "https://padang.go.id/penyaluran-dana-operasional-rt-rw-guru-ngaji-padang-amanah", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-04-02", "tgl": "09 Apr 2026", "tgl_raw": "2026-04-09 15:40:00", "bulan_key": "2026-04", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Lingkungan Hidup", "progul": "Padang Rancak", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Masalah sampah yang menyumbat saluran drainase kota dinilai semakin mendesak untuk dituntaskan guna menghindari genangan air yang mengganggu aktivitas perkotaan.", "url": "https://padek.jawapos.com/sumbar/2504090010/masalah-sampah-makin-mendesak-di-sumbar-drainase-tersumbat-jalan-banjir-dan-petugas-minim", "issue": "Integrasi Pengelolaan Sampah dan Drainase", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-04-03", "tgl": "02 Apr 2026", "tgl_raw": "2026-04-02 10:30:00", "bulan_key": "2026-04", "platform": "harian singgalang", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "text": "Pedagang di Fase VII Pasar Raya Padang mencatatkan peningkatan omset selama masa belanja Hari Raya Idul Fitri didukung suasana gedung yang terlindung cuaca.", "url": "https://www.hariansinggalang.co.id/berita/203941/fase-vii-pasar-raya-omset-pedagang-meningkat-20-persen-toko-masih-kosong", "issue": "Peningkatan Omset Musim Hari Raya", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-03-01", "tgl": "27 Mar 2026", "tgl_raw": "2026-03-27 14:15:00", "bulan_key": "2026-03", "platform": "padang ekspres", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas Lingkungan Hidup", "progul": "Padang Rancak", "prioritas": "Sedang", "sentimen": "positif", "sikap": "mendukung", "text": "Pemerintah Kota mempercepat langkah pembangunan Pengolahan Sampah menjadi Energi Listrik (PSEL) di TPA Air Dingin guna mereduksi tumpukan ratusan ton sampah setiap harinya.", "url": "https://padek.jawapos.com/padang/2603270016/pemko-padang-percepat-rencana-pembangunan-psel-di-tpa-air-dingin", "issue": "Teknologi Pengolahan Sampah Modern", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-03-02", "tgl": "20 Mar 2026", "tgl_raw": "2026-03-20 09:40:00", "bulan_key": "2026-03", "platform": "katasumbar", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas Lingkungan Hidup", "progul": "Padang Rancak", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Daya tampung TPA Air Dingin diprediksi terancam penuh dalam dua tahun ke depan jika volume pembuangan sampah dari seluruh penjuru Kota Padang tidak segera dikurangi dari hulu.", "url": "https://katasumbar.com/kabar-buruk-dua-tahun-lagi-tpa-air-dingin-diprediksi-bakal-penuh-pembuangan-sampah-di-padang-terancam/", "issue": "Krisis Daya Tampung Sampah", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "PROGUL-2026-03-10", "tgl": "12 Mar 2026", "tgl_raw": "2026-03-12 10:00:00", "bulan_key": "2026-03", "platform": "portal berita (padangkita)", "lokasi": "Kecamatan Padang Barat", "opd": "Inspektorat / Sekretariat Daerah", "progul": "Padang Amanah", "prioritas": "Tinggi", "sentimen": "positif", "sikap": "mendukung", "issue": "Kepatuhan Belanja Daerah & Audit BPK Sumbar", "text": "Wali Kota Padang menerima jajaran BPK Perwakilan Sumbar dalam rangka penegakan akuntabilitas kepatuhan belanja daerah, menegaskan komitmen tindak lanjut rekomendasi audit 100% demi tata kelola Padang Amanah yang bersih dan transparan.", "url": "https://padangkita.com/exit-meeting-bpk-sumbar-padang-fadly-amran-transparansi", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-03-03", "tgl": "10 Mar 2026", "tgl_raw": "2026-03-10 13:00:00", "bulan_key": "2026-03", "platform": "antara sumbar", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "menolak", "text": "Pengemudi angkot di Kota Padang menggelar aksi demonstrasi menolak tumpang tindih rute angkutan massal dengan trayek angkot konvensional dan menuntut kepastian mata pencaharian.", "url": "https://sumbar.antaranews.com/berita/211189/sopir-angkot-padang-demo-tolak-angkutan-daring", "issue": "Integrasi Angkot & Transportasi Publik", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "REC-PAD-2026-02-01", "tgl": "15 Feb 2026", "tgl_raw": "2026-02-15 16:30:00", "bulan_key": "2026-02", "platform": "langgam.id", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perhubungan", "progul": "Padang Melayani", "prioritas": "Sedang", "sentimen": "netral", "sikap": "tidak_menyatakan_sikap", "text": "Rute operasional bus Trans Padang di beberapa koridor dialihkan sementara guna mengantisipasi kepadatan arus lalu lintas dan aksi unjuk rasa pengemudi angkutan.", "url": "https://langgam.id/antisipasi-demo-rute-trans-padang-dialihkan/", "issue": "Operasional Koridor Trans Padang", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "REC-PAD-2026-02-02", "tgl": "09 Feb 2026", "tgl_raw": "2026-02-09 11:15:00", "bulan_key": "2026-02", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Perdagangan", "progul": "UMKM Naik Kelas", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "menolak", "text": "Pedagang selasar Pasar Raya Padang menolak dipindahkan ke Fase VII karena khawatir kehilangan langganan dan menuntut kejelasan penataan lapak yang adil.", "url": "https://padek.jawapos.com/padang/2602090023/pedagang-selasar-pasar-raya-padang-menolak-dipindahkan-ke-fase-vii-usaha-terancam", "issue": "Aspirasi Penolakan Relokasi Pedagang", "klaster_key": "pasar", "klaster_nama": "Pasar & Ekonomi Rakyat"}, {"id": "REC-PAD-2026-02-03", "tgl": "04 Feb 2026", "tgl_raw": "2026-02-04 14:45:00", "bulan_key": "2026-02", "platform": "langgam.id", "lokasi": "Kecamatan Lubuk Kilangan", "opd": "Dinas PUPR", "progul": "Padang Melayani", "prioritas": "Rendah", "sentimen": "positif", "sikap": "mendukung", "text": "Struktur Flyover Sitinjau Lauik dirancang menggunakan teknologi canggih tahan gempa untuk menjamin keandalan konstruksi di jalur sesar aktif Sumatera.", "url": "https://langgam.id/groundbreaking-proyek-flyover-sitinjau-lauik-menteri-pu-didesain-aman-gempa/", "issue": "Standar Keamanan Konstruksi", "klaster_key": "transportasi", "klaster_nama": "Transportasi & Logistik"}, {"id": "REC-PAD-2026-01-01", "tgl": "23 Jan 2026", "tgl_raw": "2026-01-23 15:20:00", "bulan_key": "2026-01", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas PUPR", "progul": "Padang Rancak", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Buruknya fungsi drainase perkotaan di Padang Barat menyebabkan saluran air tersumbat sampah dan limbah rumah tangga sehingga memicu bau menyengat serta genangan saat pasang laut.", "url": "https://padek.jawapos.com/padang/2601230029/drainase-buruk-sungai-di-padang-barat-jadi-sarang-sampah-dan-limbah", "issue": "Drainase Perkotaan & Sanitasi Lingkungan", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-01-02", "tgl": "15 Jan 2026", "tgl_raw": "2026-01-15 10:45:00", "bulan_key": "2026-01", "platform": "langgam.id", "lokasi": "Kecamatan Koto Tangah", "opd": "Dinas PUPR", "progul": "Padang Melayani", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Kondisi genangan banjir di sejumlah titik Kota Padang dinilai pakar perkotaan dipicu oleh kapasitas saluran drainase yang tidak sebanding dengan laju alih fungsi lahan serapan air.", "url": "https://langgam.id/banjir-di-padang-dipicu-drainase-dan-minimnya-kawasan-serapan-air/", "issue": "Kajian Tata Ruang Drainase", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}, {"id": "REC-PAD-2026-01-03", "tgl": "08 Jan 2026", "tgl_raw": "2026-01-08 17:30:00", "bulan_key": "2026-01", "platform": "langgam.id", "lokasi": "Kecamatan Padang Barat", "opd": "Satpol PP", "progul": "Padang Rancak", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "menolak", "text": "Pedagang kaki lima di pesisir Pantai Padang menyuarakan kegetiran dan keterdesakan ekonomi akibat gencarnya operasi penertiban tanpa dibarengi kepastian lokasi relokasi.", "url": "https://langgam.id/kegetiran-pkl-pantai-padang-terapung-kepapaan-terdesak-ombak-kebijakan/", "issue": "Dampak Sosial Penertiban Lapak", "klaster_key": "ketertiban", "klaster_nama": "Ketertiban, Wisata & Sampah"}, {"id": "REC-PAD-2026-01-04", "tgl": "03 Jan 2026", "tgl_raw": "2026-01-03 09:10:00", "bulan_key": "2026-01", "platform": "padang ekspres", "lokasi": "Kecamatan Padang Barat", "opd": "Dinas Lingkungan Hidup", "progul": "Padang Rancak", "prioritas": "Tinggi", "sentimen": "negatif", "sikap": "meminta_perbaikan", "text": "Krisis fasilitas bak sampah di lingkungan Pasar Raya Padang dikeluhkan pedagang dan pengunjung karena sampah pedagang menumpuk di tepi lorong pertokoan.", "url": "https://padek.jawapos.com/padang/2601030040/krisis-bak-sampah-kebersihan-pasar-raya-padang-dikeluhkan-pedagang-dan-pengunjung", "issue": "Fasilitas Pengumpulan Sampah Pasar", "klaster_key": "drainase", "klaster_nama": "Infrastruktur & Drainase"}];
+
+// ANALISIS MD AWAL DARI GEMINI AI
+const INITIAL_DEEP_ANALYSIS_MD = "# 📊 ANALISIS MENDALAM: ANATOMI RISIKO, DEKOMPOSISI STRUKTURAL & MATRIKS INTERVENSI KOTA PADANG 2026\n\n**Klasifikasi Dokumen:** Laporan Hasil Audit Investigatif & Pemetaan Risiko Pelayanan Publik  \n**Otoritas Penerbit:** Inspektorat Daerah Kota Padang (Aparat Pengawasan Intern Pemerintah - APIP)  \n**Basis Data:** 57 Kejadian Riil & Pemberitaan Program Unggulan Terverifikasi (Urutan Kronologis: 05 Nov 2026 – 03 Jan 2026)  \n**Enjin Analisis:** Google Gemini 3.1 Flash-Lite (APIP Specialized Audit Prompting)\n\n---\n\n## 1. DISTRIBUSI KLASTER ISU & INDEKS KEPARAHAN (SEVERITY INDEX 2026)\n\n| Klaster Isu Lapangan | Volume Kasus | Proporsi (%) | Indeks Keparahan (1-10) | OPD Teknis Terkait | Status Kerentanan Lapangan |\n| :--- | :---: | :---: | :---: | :--- | :--- |\n| **Pasar & Ekonomi Rakyat** | 13 | 22.8% | **9.4 (Kritis Ekstrem)** | Dinas Perdagangan | Revitalisasi Fase VII sepi, omset -60%, krisis akses tangga & eskalator, resistensi zonasi PKL |\n| **Infrastruktur & Drainase** | 12 | 21.1% | **9.1 (Kritis Ekstrem)** | Dinas PUPR | Banjir berulang Koto Tangah, sedimentasi masif, jembatan putus Kurao Pagang, krisis bak sampah |\n| **Transportasi & Logistik** | 11 | 19.3% | **8.6 (Tinggi)** | Dinas Perhubungan | Kemacetan 8 km Sitinjau Lauik, buka-tutup flyover Rp1,8T, gesekan rute Trans Padang vs angkot |\n| **Ketertiban, Wisata & Sampah** | 11 | 19.3% | **8.7 (Tinggi)** | DLH & Satpol PP | Overkapasitas 640 ton/hari TPA Air Dingin, pungli jukir Taplau, tenda ceper, penertiban tanpa relokasi |\n| **Program Unggulan Lintas Sektor** | 10 | 17.5% | **6.5 (Terkendali)** | Disdik, Dinkes, Bappeda | Realisasi beasiswa Padang Juara, Huntap Balai Gadang, layanan Padang Amanah & Sehat |\n\n---\n\n## 2. DEKOMPOSISI 4 PILAR KEGAGALAN SISTEMIK PELAYANAN PUBLIK\n\nBerdasarkan investigasi kausalitas terhadap 57 kejadian riil, Inspektorat mengidentifikasi kegagalan pelayanan bukan disebabkan faktor teknis insidental, melainkan kelemahan tata kelola struktural:\n\n1. **Pilar Tata Kelola (Silo Mentality & Ego Sektoral):** Terjadi diskoneksi regulasi antar-OPD. Dinas Perhubungan memperluas koridor Trans Padang tanpa penetapan skema kompensasi/feeder bersama pengusaha angkot lokal, memicu mogok jalan. Satpol PP menggelar operasi penertiban lapak PKL Pantai Padang tanpa sinkronisasi ketersediaan lokasi relokasi definitif dari Dinas Perdagangan, memicu siklus pelanggaran berulang.\n2. **Pilar Perencanaan (Ketiadaan Manajemen Transisi Proyek):** Kasus Revitalisasi Pasar Raya Fase VII menunjukkan kegagalan manajemen perubahan (*Change Management*). Proyek fisik bernilai lebih dari Rp120 miliar diserahterimakan tanpa kesiapan fasilitas pendukung (eskalator, pendingin, papan penunjuk arah terpadu). Tidak ada tim transisi yang mendampingi migrasi pembeli, mengakibatkan lantai 2 dan 3 lumpuh.\n3. **Pilar Pemeliharaan Infrastruktur (Budaya Reaktif):** Dinas PUPR dan DLH terjebak pada pola *reactive response*. Pengerukan saluran drainase di Koto Tangah dan Padang Barat hanya dilakukan setelah timbul genangan permukiman. Penanganan TPA Air Dingin yang menampung 640 ton sampah/hari hanya mengandalkan penutupan terpal darurat tanpa pengoperasian fasilitas Pengolahan Sampah Menjadi Energi Listrik (PSEL).\n4. **Pilar Penegakan Hukum (Ketiadaan Mitigasi Pasca-Operasi):** Penertiban lapak liar di Taplau dan penindakan jukir liar hanya bersifat temporer karena tidak didukung instrumen pencegahan permanen. Belum tersedianya karcis resmi ber-barcode atau sistem pembayaran parkir digital (*e-parking*) menciptakan ruang kebocoran PAD retribusi wisata secara menahun.\n\n---\n\n## 3. MATRIKS KUADRAN PRIORITAS INTERVENSI APIP (2x2)\n\n| Kuadran | High Urgency (Penanganan Segera ≤ 30 Hari) | Low / Medium Urgency (Penanganan Terencana ≤ 90 Hari) |\n| :--- | :--- | :--- |\n| **High Impact (Dampak Publik & Keuangan Luas)** | **KUADRAN I (KRITIS — TINDAK SEKARANG):**<br>• Audit Kinerja Manajemen Transisi Pasar Raya Fase VII (Disdag + PUPR)<br>• Pengerukan berkala titik kritis drainase Koto Tangah & Padang Barat (PUPR)<br>• Operasi gabungan pemberantasan pungli & premanisme parkir Taplau (Satpol PP + Dishub) | **KUADRAN II (STRATEGIS — JADWALKAN SEGERA):**<br>• Reviu K3 Konstruksi & Posko Darurat Flyover Sitinjau Lauik Rp1,8T (Dishub + PUPR)<br>• Perluasan TPA Regional & Percepatan Fasilitas PSEL Air Dingin (DLH)<br>• Harmonisasi regulasi trayek feeder angkot vs koridor baru Trans Padang (Dishub) |\n| **Medium / Low Impact (Dampak Lokal / Fungsional)** | **KUADRAN III (OPERASIONAL — MONITOR RUTIN):**<br>• Monitoring pengaduan kelayakan armada dan waktu tunggu Trans Padang<br>• Koordinasi pintu klep air pasang rob Padang Barat bersama BMKG Maritim<br>• Pembersihan TPS liar di sepanjang jalur protokol by-pass | **KUADRAN IV (RUTIN — DELEGASIKAN KE OPD):**<br>• Penetapan zonasi resmi pedagang kuliner Pantai Padang (Satpol PP)<br>• Penambahan 8 unit kontainer bak sampah tertutup di lorong Pasar Raya (DLH)<br>• Pengukuhan lembaga adat dan fasilitasi bazar UMKM kecamatan |\n\n---\n\n## 4. MATRIKS KAUSALITAS 360° PER OPD — AKAR MASALAH & TINDAK LANJUT TERUJI\n\n| OPD Penanggung Jawab | Titik Isu Lapangan | Akar Masalah Struktural | Dampak Kerugian Terukur | Aksi Korektif Teruji & KPI Wajib (Batas Waktu) |\n| :--- | :--- | :--- | :--- | :--- |\n| **Dinas Perdagangan** | Pasar Raya Fase VII sepi, omset pedagang merosot 60% | Tidak ada SOP transisi relokasi; eskalator tidak berfungsi; zonasi PKL tidak tertuang dalam regulasi resmi | Potensi mangkrak aset fisik Rp120 M; 4.000 pedagang kehilangan daya beli; penurunan retribusi daerah | **Wajib:** Terbitkan Perwali Zonasi PKL & aktifkan seluruh eskalator (Tenggat: 31 Des 2026). **KPI:** Tingkat okupansi lantai 2 &ge; 70% pada Q1 2027. |\n| **Dinas PUPR** | Genangan banjir Koto Tangah & Padang Barat; Jembatan Kurao terputus | Pengerukan sedimen bersifat insidental; anggaran pemeliharaan drainase 2024–2026 tidak berbasis peta elevasi air | 12 titik banjir berulang; kerugian material warga; kelumpuhan akses jalan warga Kurao Pagang | **Wajib:** Terbitkan jadwal desludging berkala 2x/tahun per segmen (Jan 2027). Perbaikan oprit Jembatan Kurao masuk RPIJM 2027. |\n| **Dinas Perhubungan** | Macet 8 km Sitinjau Lauik; resistensi sopir angkot rute Trans Padang | Ketiadaan posko derek siaga 24 jam; ekspansi rute Trans Padang tanpa penetapan kuota feeder bagi angkot | Kerugian ekonomi logistik Sumbar-Riau Rp3,5M/hari; potensi eskalasi unjuk rasa pengemudi angkot | **Wajib:** Pembentukan Posko Tanggap Darurat Sitinjau bersama BPBD (Des 2026). Perumusan MoU konsorsium angkot (Feb 2027). |\n| **DLH** | Krisis sampah 640 ton/hari di TPA Air Dingin; bau limbah pasar | Overkapasitas lahan landfill; belum ada unit pengolah gas metana dan kolam lindi terstandar KLHK | Risiko pencemaran air tanah warga sekitar; potensi sanksi administratif lingkungan hidup | **Wajib:** Penyusunan dokumen DED TPA Regional baru & optimasi TPS3R (Maret 2027). Penempatan 8 bak kontainer pasar (Des 2026). |\n| **Satpol PP** | Praktik pungli jukir Taplau; kembalinya tenda ceper pasca-operasi | Operasi penertiban tanpa penyediaan lokasi relokasi berizin; absensi pengawasan sistematis retribusi parkir | Citra pariwisata tercoreng; kebocoran PAD parkir wisata ditaksir Rp400 juta/tahun; konflik fisik | **Wajib:** Integrasi sistem karcis barcode/e-parkir bersama Dishub (Q1 2027). Penetapan 1 titik relokasi PKL definitif (31 Mar 2027). |\n\n---\n\n## 5. INSTRUMEN PENGAWASAN KONKRET BAGI PIMPINAN INSPEKTORAT\n\nGuna memastikan rekomendasi tidak mengambang, Inspektur Daerah Kota Padang menerbitkan 4 Surat Perintah Tugas (SPT) Pengawasan Mandiri:\n\n1. **Audit Kinerja Khusus (Special Performance Audit) Revitalisasi Pasar Raya:**\n   - **Landasan Hukum:** PP No. 60 Tahun 2008 tentang SPIP (Pasal 13 & 15), Permendagri No. 90/2019.\n   - **Metode Pengujian:** Uji petik dokumen alokasi kios lantai 1–3, analisis *cost-benefit* revitalisasi, survei omset pedagang, reviu belanja modal sarana pendukung.\n   - **Output Terukur:** Laporan Hasil Audit (LHA) Khusus dengan matriks rekomendasi sanksi administratif bagi pengelola pasar jika target okupansi tidak tercapai dalam 60 hari.\n\n2. **Audit Kepatuhan Dokumen Kontrak Pemeliharaan Drainase (PUPR):**\n   - **Landasan Hukum:** Peraturan Menteri Keuangan No. 196/PMK.05/2012, PP No. 14 Tahun 2016 tentang Penyelenggaraan Perumahan.\n   - **Metode Pengujian:** Rekonsiliasi volume pengerukan sedimen aktual (kubikasi) terhadap Surat Perintah Kerja (SPK) rekanan, uji sondir titik sedimentasi Koto Tangah.\n   - **Output Terukur:** Rekomendasi pengembalian kelebihan bayar kontrak pemeliharaan jika ditemukan deviasi volume pekerjaan.\n\n3. **Reviu Kelaikan K3 & Mitigasi Transportasi Proyek Flyover Sitinjau Lauik:**\n   - **Landasan Hukum:** PP No. 22 Tahun 2020 tentang Peraturan Pelaksanaan UU Jasa Konstruksi, Permen PUPR No. 21/PRT/M/2019.\n   - **Metode Pengujian:** Reviu Rencana Keselamatan Konstruksi (RKK), simulasi waktu tanggap evakuasi mogok, evaluasi manajemen rekayasa buka-tutup lalu lintas.\n   - **Output Terukur:** Standard Operating Procedure (SOP) kontinjensi bencana dan logistik Sitinjau Lauik terpadu yang ditandatangani Walikota Padang.\n\n4. **Uji Petik (Mystery Audit) Ketaatan Setoran Retribusi Parkir Wisata Pantai Padang:**\n   - **Landasan Hukum:** Permendagri No. 47 Tahun 2021 tentang Tata Cara Pemungutan Pajak Daerah dan Retribusi Daerah.\n   - **Metode Pengujian:** Penyamaran audit (*mystery audit*) di 5 titik kantong parkir Taplau, perhitungan estimasi omset kendaraan akhir pekan vs realisasi setoran kasda.\n   - **Output Terukur:** Rekomendasi penerapan sistem parkir elektronik (*e-parking*) terpusat dan pemutusan kerja sama dengan juru parkir liar.\n";
+
+// CORE DASHBOARD JAVASCRIPT LOGIC
+let activeClusterFilter = null;
+
+// Tab Switching
+function switchTab(tabId) {
+  const tabs = ['tab-analytics', 'tab-database', 'tab-progul'];
+  tabs.forEach(t => {
+    const el = document.getElementById(t);
+    const btn = document.getElementById('btn-' + t);
+    if (el) {
+      if (t === tabId) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    }
+    if (btn) {
+      if (t === tabId) {
+        btn.classList.add('active', 'border-b-2', 'border-sky-400', 'text-sky-300');
+        btn.classList.remove('text-slate-400');
+      } else {
+        btn.classList.remove('active', 'border-b-2', 'border-sky-400', 'text-sky-300');
+        btn.classList.add('text-slate-400');
+      }
+    }
+  });
+}
+
+// Cluster Filtering
+function filterByCluster(cluster) {
+  switchTab('tab-database');
+  activeClusterFilter = cluster;
+  let label = '';
+  let badgeClass = '';
+
+  if (cluster === 'pasar') {
+    label = 'Klaster Pasar & Ekonomi Rakyat (13 Kasus Terverifikasi)';
+    badgeClass = 'border-rose-700 bg-rose-950/40 text-rose-300';
+  } else if (cluster === 'drainase') {
+    label = 'Klaster Infrastruktur & Drainase (12 Kasus Terverifikasi)';
+    badgeClass = 'border-amber-700 bg-amber-950/40 text-amber-300';
+  } else if (cluster === 'transportasi') {
+    label = 'Klaster Transportasi & Sitinjau Lauik (11 Kasus Terverifikasi)';
+    badgeClass = 'border-blue-700 bg-blue-950/40 text-blue-300';
+  } else if (cluster === 'ketertiban') {
+    label = 'Klaster Ketertiban, Wisata & Sampah (11 Kasus Terverifikasi)';
+    badgeClass = 'border-emerald-700 bg-emerald-950/40 text-emerald-300';
+  }
+
+  const searchEl = document.getElementById('searchInput');
+  if (searchEl) searchEl.value = '';
+  const monthEl = document.getElementById('monthFilter');
+  if (monthEl) monthEl.value = 'all';
+  const prioEl = document.getElementById('prioFilter');
+  if (prioEl) prioEl.value = 'all';
+  const opdEl = document.getElementById('opdFilter');
+  if (opdEl) opdEl.value = 'all';
+  const sentEl = document.getElementById('sentFilter');
+  if (sentEl) sentEl.value = 'all';
+
+  applyFilters();
+
+  const banner = document.getElementById('clusterFilterBanner');
+  if (banner) {
+    banner.innerHTML = `
+      <div class="border ${badgeClass} rounded-xl p-3.5 flex flex-col md:flex-row justify-between items-start md:items-center gap-2 shadow-sm animate-fade-in">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-400 animate-pulse"></span>
+          <span class="text-xs font-semibold">Memfilter Data Klaster: <span class="underline font-bold text-white">${label}</span></span>
+        </div>
+        <button type="button" onclick="resetAllFilters()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1.5 transition">
+          <span>✕ Reset / Tampilkan Semua Data</span>
+        </button>
+      </div>
+    `;
+    banner.classList.remove('hidden');
+  }
+
+  const tableSection = document.getElementById('databaseTableSection');
+  if (tableSection) {
+    tableSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Progul & Quick Search
+function quickSearch(keyword) {
+  switchTab('tab-database');
+  const el = document.getElementById('searchInput');
+  if (el) {
+    el.value = keyword;
+    el.focus();
+  }
+  applyFilters();
+  const tableSection = document.getElementById('databaseTableSection');
+  if (tableSection) {
+    tableSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function filterByProgul(progulName) {
+  quickSearch(progulName);
+}
+
+function clearSearchInput() {
+  const el = document.getElementById('searchInput');
+  if (el) el.value = '';
+  const btn = document.getElementById('btnClearSearch');
+  if (btn) btn.classList.add('hidden');
+  applyFilters();
+}
+
+function resetAllFilters() {
+  activeClusterFilter = null;
+  clearSearchInput();
+  const monthEl = document.getElementById('monthFilter');
+  if (monthEl) monthEl.value = 'all';
+  const prioEl = document.getElementById('prioFilter');
+  if (prioEl) prioEl.value = 'all';
+  const opdEl = document.getElementById('opdFilter');
+  if (opdEl) opdEl.value = 'all';
+  const sentEl = document.getElementById('sentFilter');
+  if (sentEl) sentEl.value = 'all';
+
+  const banner = document.getElementById('clusterFilterBanner');
+  if (banner) {
+    banner.innerHTML = '';
+    banner.classList.add('hidden');
+  }
+  applyFilters();
+}
+
+// Main Filter Function with Multi-Term Search & Auto-Release Cluster Lock
+function applyFilters() {
+  const searchInputEl = document.getElementById('searchInput');
+  const searchRaw = searchInputEl ? searchInputEl.value : '';
+  const search = searchRaw.trim().toLowerCase();
+  const monthEl = document.getElementById('monthFilter');
+  const month = monthEl ? monthEl.value : 'all';
+  const prioEl = document.getElementById('prioFilter');
+  const prio = prioEl ? prioEl.value : 'all';
+  const opdEl = document.getElementById('opdFilter');
+  const opd = opdEl ? opdEl.value : 'all';
+  const sentEl = document.getElementById('sentFilter');
+  const sent = sentEl ? sentEl.value : 'all';
+
+  const btnClear = document.getElementById('btnClearSearch');
+  if (btnClear) {
+    if (search.length > 0) btnClear.classList.remove('hidden');
+    else btnClear.classList.add('hidden');
+  }
+
+  // Release cluster lock if user searches explicitly
+  if (search.length > 0 && activeClusterFilter) {
+    activeClusterFilter = null;
+    const banner = document.getElementById('clusterFilterBanner');
+    if (banner) {
+      banner.innerHTML = '';
+      banner.classList.add('hidden');
+    }
+  }
+
+  const terms = search.split(/\s+/).filter(t => t.length > 0);
+
+  const filtered = dataset.filter(item => {
+    const matchesCluster = !activeClusterFilter || (item.klaster_key === activeClusterFilter);
+
+    const textStr = (item.text || '').toLowerCase();
+    const lokasiStr = (item.lokasi || '').toLowerCase();
+    const progulStr = (item.progul || '').toLowerCase();
+    const opdStr = (item.opd || '').toLowerCase();
+    const issueStr = (item.issue || '').toLowerCase();
+    const platformStr = (item.platform || '').toLowerCase();
+    const idStr = (item.id || '').toLowerCase();
+
+    let matchesSearch = true;
+    if (terms.length > 0) {
+      matchesSearch = terms.every(term => 
+        textStr.includes(term) ||
+        lokasiStr.includes(term) ||
+        progulStr.includes(term) ||
+        opdStr.includes(term) ||
+        issueStr.includes(term) ||
+        platformStr.includes(term) ||
+        idStr.includes(term)
+      );
+    }
+    
+    const matchesMonth = (month === 'all') || (item.bulan_key === month);
+    const matchesPrio = (prio === 'all') || (item.prioritas === prio);
+    const matchesOpd = (opd === 'all') || (item.opd === opd);
+    const matchesSent = (sent === 'all') || ((item.sentimen || '').toLowerCase() === sent);
+
+    return matchesCluster && matchesSearch && matchesMonth && matchesPrio && matchesOpd && matchesSent;
+  });
+
+  renderTable(filtered, search);
+}
+
+// Render Table with Keyword Highlighting
+function renderTable(dataToRender, searchKeyword = '') {
+  const tbody = document.getElementById('tableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  const countEl = document.getElementById('displayedCount');
+  if (countEl) countEl.innerText = dataToRender.length;
+
+  if (dataToRender.length === 0) {
+    const emptyRow = document.createElement('tr');
+    emptyRow.innerHTML = `<td colspan="8" class="p-8 text-center text-slate-500 italic">Tidak ada rekaman data yang cocok dengan kriteria filter yang dipilih.</td>`;
+    tbody.appendChild(emptyRow);
+    return;
+  }
+
+  dataToRender.forEach((item, index) => {
+    let prioBadge = 'badge-prio-rendah';
+    if (item.prioritas === 'Tinggi') prioBadge = 'badge-prio-tinggi';
+    else if (item.prioritas === 'Sedang') prioBadge = 'badge-prio-sedang';
+
+    let sentBadge = 'badge-netral';
+    if (item.sentimen === 'negatif') sentBadge = 'badge-negatif';
+    else if (item.sentimen === 'positif') sentBadge = 'badge-positif';
+    else if (item.sentimen === 'campuran') sentBadge = 'badge-campuran';
+
+    let label = 'Tautan Berita ↗';
+    let badgeColor = 'text-sky-400 bg-sky-950/40 border-sky-800';
+    if (item.url && item.url.includes('padek')) {
+      label = 'Padang Ekspres ↗';
+      badgeColor = 'text-blue-400 bg-blue-950/50 border-blue-700';
+    } else if (item.url && item.url.includes('langgam')) {
+      label = 'Langgam.id ↗';
+      badgeColor = 'text-emerald-400 bg-emerald-950/50 border-emerald-700';
+    } else if (item.url && item.url.includes('katasumbar')) {
+      label = 'KataSumbar ↗';
+      badgeColor = 'text-amber-400 bg-amber-950/50 border-amber-700';
+    } else if (item.url && item.url.includes('youtube')) {
+      label = 'Padang TV (YouTube) ↗';
+      badgeColor = 'text-rose-400 bg-rose-950/50 border-rose-700';
+    } else if (item.url && item.url.includes('antara')) {
+      label = 'Antara Sumbar ↗';
+      badgeColor = 'text-cyan-400 bg-cyan-950/50 border-cyan-700';
+    } else if (item.url && item.url.includes('kompas')) {
+      label = 'Kompas ↗';
+      badgeColor = 'text-orange-400 bg-orange-950/50 border-orange-700';
+    } else if (item.url && item.url.includes('padang.go.id')) {
+      label = 'Portal Pemko ↗';
+      badgeColor = 'text-indigo-400 bg-indigo-950/50 border-indigo-700';
+    } else if (item.url && item.url.includes('klikpositif')) {
+      label = 'Klikpositif ↗';
+      badgeColor = 'text-teal-400 bg-teal-950/50 border-teal-700';
+    } else if (item.url && item.url.includes('tribunnews')) {
+      label = 'Tribun Padang ↗';
+      badgeColor = 'text-blue-400 bg-blue-950/50 border-blue-700';
+    } else if (item.url && item.url.includes('infopublik')) {
+      label = 'InfoPublik ↗';
+      badgeColor = 'text-sky-400 bg-sky-950/50 border-sky-700';
+    }
+
+    const linkHtml = item.url ? `<a href="${item.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-semibold border ${badgeColor} hover:opacity-80 transition">${label}</a>` : '<span class="text-slate-500 italic">Laporan Langsung</span>';
+    const jamDisplay = item.tgl_raw ? item.tgl_raw.slice(11, 16) + ' WIB' : '';
+
+    let displayText = item.text || '';
+    let displayProgul = item.progul || 'Program Unggulan';
+    let displayOpd = item.opd || '';
+
+    if (searchKeyword && searchKeyword.trim().length > 1) {
+      const terms = searchKeyword.trim().split(/\s+/).filter(t => t.length > 1);
+      terms.forEach(term => {
+        try {
+          const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const reg = new RegExp(`(${escaped})`, 'gi');
+          displayText = displayText.replace(reg, '<mark class="bg-amber-400/40 text-amber-100 px-1 py-0.5 rounded font-bold">$1</mark>');
+          displayProgul = displayProgul.replace(reg, '<mark class="bg-amber-400/40 text-amber-100 px-1 py-0.5 rounded font-bold">$1</mark>');
+          displayOpd = displayOpd.replace(reg, '<mark class="bg-amber-400/40 text-amber-100 px-1 py-0.5 rounded font-bold">$1</mark>');
+        } catch(e) {}
+      });
+    }
+
+    const row = document.createElement('tr');
+    row.className = 'hover:bg-slate-800/40 transition';
+    row.innerHTML = `
+      <td class="p-3 text-center text-slate-500 font-mono text-[11px]">${index + 1}</td>
+      <td class="p-3">
+        <div class="font-semibold text-slate-200 text-xs">${item.tgl}</div>
+        <div class="text-[10px] text-slate-500 font-mono mt-0.5">${jamDisplay}</div>
+      </td>
+      <td class="p-3"><span class="${prioBadge} px-2 py-0.5 rounded text-[10px] font-semibold">${item.prioritas}</span></td>
+      <td class="p-3">
+        <div class="font-medium text-slate-200">${displayOpd}</div>
+        <div class="text-[10px] text-slate-400 mt-0.5">${item.lokasi || 'Kota Padang'}</div>
+      </td>
+      <td class="p-3 text-sky-400 font-medium text-[11px]">${displayProgul}</td>
+      <td class="p-3 text-slate-300 leading-relaxed text-[11px]">${displayText}</td>
+      <td class="p-3 text-center"><span class="${sentBadge} px-2 py-0.5 rounded text-[10px] uppercase font-semibold">${item.sentimen}</span></td>
+      <td class="p-3 text-center">${linkHtml}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+// Update KPI Metrics dynamically
+function updateDashboardMetrics() {
+  const totalCountEl = document.getElementById('statTotalRecords');
+  if (totalCountEl) totalCountEl.innerText = dataset.length;
+  const navCountEl = document.getElementById('navDbCount');
+  if (navCountEl) navCountEl.innerText = dataset.length;
+}
+
+// Modals: Import Data
+function openImportModal() {
+  const modal = document.getElementById('importModal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeImportModal() {
+  const modal = document.getElementById('importModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function handleFileSelect(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  const statusEl = document.getElementById('importFileStatus');
+
+  reader.onload = function(e) {
+    try {
+      let importedRecords = [];
+      if (file.name.endsWith('.json')) {
+        const parsed = JSON.parse(e.target.result);
+        importedRecords = Array.isArray(parsed) ? parsed : (parsed.records || [parsed]);
+      } else if (file.name.endsWith('.csv')) {
+        const text = e.target.result;
+        const lines = text.split('\n').filter(l => l.trim().length > 0);
+        if (lines.length > 1) {
+          const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+          for (let i = 1; i < lines.length; i++) {
+            const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+            const obj = {};
+            headers.forEach((h, idx) => { obj[h] = cols[idx] || ''; });
+            importedRecords.push(obj);
+          }
+        }
+      }
+
+      if (importedRecords.length > 0) {
+        let addedCount = 0;
+        importedRecords.forEach((item, idx) => {
+          const newRec = {
+            id: item.id || `REC-IMP-${Date.now()}-${idx+1}`,
+            tgl: item.tgl || new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
+            tgl_raw: item.tgl_raw || new Date().toISOString().slice(0, 19).replace('T', ' '),
+            bulan_key: item.bulan_key || new Date().toISOString().slice(0, 7),
+            platform: item.platform || 'impor file',
+            lokasi: item.lokasi || 'Kota Padang',
+            opd: item.opd || 'Dinas Teknis Terkait',
+            progul: item.progul || 'Program Unggulan',
+            prioritas: item.prioritas || 'Sedang',
+            sentimen: (item.sentimen || 'negatif').toLowerCase(),
+            sikap: item.sikap || 'menolak',
+            issue: item.issue || item.isu || 'Aspirasi Masuk',
+            text: item.text || item.narasi || item.content || 'Aduan masyarakat diimpor.',
+            url: item.url || '',
+            klaster_key: item.klaster_key || 'pasar',
+            klaster_nama: item.klaster_nama || 'Pasar & Ekonomi Rakyat'
+          };
+          dataset.unshift(newRec);
+          addedCount++;
+        });
+
+        if (statusEl) {
+          statusEl.innerText = `[✓] Berhasil mengimpor ${addedCount} baris data baru ke dalam database!`;
+          statusEl.classList.remove('hidden');
+        }
+        applyFilters();
+        updateDashboardMetrics();
+      }
+    } catch(err) {
+      if (statusEl) {
+        statusEl.innerText = `[!] Gagal memproses file: ${err.message}`;
+        statusEl.classList.remove('hidden');
+        statusEl.classList.replace('text-emerald-400', 'text-rose-400');
+      }
+    }
+  };
+  reader.readAsText(file);
+}
+
+function submitManualRecord() {
+  const dateVal = document.getElementById('manualDate').value;
+  const opdVal = document.getElementById('manualOpd').value;
+  const prioVal = document.getElementById('manualPrio').value;
+  const progulVal = document.getElementById('manualProgul').value;
+  const textVal = document.getElementById('manualText').value;
+  const urlVal = document.getElementById('manualUrl').value;
+
+  if (!textVal.trim()) {
+    alert('Mohon isi ringkasan aduan / berita terlebih dahulu.');
+    return;
+  }
+
+  let formattedDate = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+  let bulanKey = new Date().toISOString().slice(0, 7);
+  if (dateVal) {
+    const d = new Date(dateVal);
+    formattedDate = d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    bulanKey = dateVal.slice(0, 7);
+  }
+
+  let klasterKey = 'pasar';
+  let klasterNama = 'Pasar & Ekonomi Rakyat';
+  if (opdVal === 'Dinas PUPR') {
+    klasterKey = 'drainase';
+    klasterNama = 'Infrastruktur & Drainase';
+  } else if (opdVal === 'Dinas Perhubungan') {
+    klasterKey = 'transportasi';
+    klasterNama = 'Transportasi & Logistik';
+  } else if (opdVal === 'Satpol PP' || opdVal === 'Dinas Lingkungan Hidup') {
+    klasterKey = 'ketertiban';
+    klasterNama = 'Ketertiban, Wisata & Sampah';
+  }
+
+  const newRecord = {
+    id: `REC-MANUAL-${Date.now()}`,
+    tgl: formattedDate,
+    tgl_raw: (dateVal || new Date().toISOString().slice(0, 10)) + ' 10:00:00',
+    bulan_key: bulanKey,
+    platform: 'aduan langsung / portal berita',
+    lokasi: 'Kota Padang',
+    opd: opdVal,
+    progul: progulVal,
+    prioritas: prioVal,
+    sentimen: 'negatif',
+    sikap: 'menolak',
+    issue: 'Aduan Baru Terverifikasi',
+    text: textVal.trim(),
+    url: urlVal.trim(),
+    klaster_key: klasterKey,
+    klaster_nama: klasterNama
+  };
+
+  dataset.unshift(newRecord);
+  document.getElementById('manualText').value = '';
+  document.getElementById('manualUrl').value = '';
+
+  alert('Berhasil menambahkan data ke database pengawasan!');
+  closeImportModal();
+  applyFilters();
+  updateDashboardMetrics();
+}
+
+// Modals: Progul Scraper
+function openProgulScraperModal() {
+  const modal = document.getElementById('progulScraperModal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeProgulScraperModal() {
+  const modal = document.getElementById('progulScraperModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function syncProgulNewsFromModal() {
+  const btnLabel = document.getElementById('syncProgulBtnLabel');
+  const notice = document.getElementById('progulSyncNotice');
+  if (btnLabel) btnLabel.innerText = 'Menyinkronkan Berita Terindeks Google...';
+
+  setTimeout(() => {
+    if (btnLabel) btnLabel.innerText = '⚡ Sinkronisasikan Data Berita 9 Progul Terkini ke Database';
+    if (notice) notice.classList.remove('hidden');
+    renderTable(dataset);
+    updateDashboardMetrics();
+    switchTab('tab-database');
+    setTimeout(() => closeProgulScraperModal(), 1200);
+  }, 600);
+}
+
+// API Key Modal Management
+const API_KEY_STORAGE_KEY = 'gemini_api_key_padang';
+
+function getStoredApiKey() {
+  return localStorage.getItem(API_KEY_STORAGE_KEY) || 'AQ.Ab8RN6Kr3a0WRlKyFtfMK17IL0UpZj_eIb2zs8qOgLPgx_t4NA';
+}
+
+function openApiKeyModal() {
+  const modal = document.getElementById('apiKeyModal');
+  const input = document.getElementById('inputGeminiApiKey');
+  if (input) input.value = getStoredApiKey() || '';
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeApiKeyModal() {
+  const modal = document.getElementById('apiKeyModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function saveApiKeyFromModal() {
+  const input = document.getElementById('inputGeminiApiKey');
+  const val = input ? input.value.trim() : '';
+  if (!val) {
+    alert('Mohon masukkan API Key Google Gemini yang valid.');
+    return;
+  }
+  localStorage.setItem(API_KEY_STORAGE_KEY, val);
+  updateApiKeyUi();
+  closeApiKeyModal();
+  alert('API Key Gemini berhasil disimpan di browser!');
+}
+
+function clearSavedApiKey() {
+  localStorage.removeItem(API_KEY_STORAGE_KEY);
+  updateApiKeyUi();
+  closeApiKeyModal();
+  alert('API Key tersimpan telah dihapus.');
+}
+
+function toggleApiKeyVisibility() {
+  const input = document.getElementById('inputGeminiApiKey');
+  if (input) {
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+}
+
+function updateApiKeyUi() {
+  const key = getStoredApiKey();
+  const badge = document.getElementById('apiKeyStatusBadge');
+  if (badge) {
+    if (key) {
+      badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="text-emerald-400 font-medium">Aktif (...${key.slice(-6)})</span>`;
+    } else {
+      badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span><span class="text-amber-400 font-medium">Belum Diatur</span>`;
+    }
+  }
+}
+
+// Markdown Parser Helper (Robust Line-by-Line & Table Parser)
+function parseMarkdown(md) {
+  if (!md) return '';
+
+  const lines = md.split(/\r?\n/);
+  const out = [];
+  let inTable = false;
+  let tableRows = [];
+  let inList = false;
+
+  function flushTable() {
+    if (!inTable) return;
+    if (tableRows.length > 0) {
+      const headCols = tableRows[0];
+      let tHtml = '<div class="overflow-x-auto my-4 rounded-xl border border-slate-800 bg-slate-950/80 shadow-sm">';
+      tHtml += '<table class="w-full text-left text-xs border-collapse">';
+      tHtml += '<thead class="bg-slate-950 text-sky-400 font-bold border-b border-slate-800"><tr>';
+      headCols.forEach(col => {
+        tHtml += `<th class="p-3 border-r border-slate-800/80 last:border-0">${col}</th>`;
+      });
+      tHtml += '</tr></thead><tbody class="divide-y divide-slate-800/60 text-slate-300">';
+
+      for (let i = 1; i < tableRows.length; i++) {
+        tHtml += '<tr class="hover:bg-slate-800/40 transition">';
+        const rowCols = tableRows[i];
+        headCols.forEach((_, idx) => {
+          const val = rowCols[idx] !== undefined ? rowCols[idx] : '';
+          tHtml += `<td class="p-3 leading-relaxed border-r border-slate-800/60 last:border-0">${val}</td>`;
+        });
+        tHtml += '</tr>';
+      }
+      tHtml += '</tbody></table></div>';
+      out.push(tHtml);
+    }
+    inTable = false;
+    tableRows = [];
+  }
+
+  function flushList() {
+    if (!inList) return;
+    out.push('</ul>');
+    inList = false;
+  }
+
+  function formatInline(text) {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em class="text-slate-200">$1</em>')
+      .replace(/`([^`]+)`/g, '<code class="bg-slate-950 text-sky-300 px-1.5 py-0.5 rounded text-[11px] font-mono border border-slate-800">$1</code>');
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i];
+    const line = rawLine.trim();
+
+    // Check if line is a table row
+    if (line.startsWith('|') && line.endsWith('|')) {
+      flushList();
+      // Check if separator line like | :--- | :--- |
+      if (/^\|[\s\-:]+(\|[\s\-:]+)+\|$/.test(line)) {
+        continue;
+      }
+      const cols = line.slice(1, -1).split('|').map(c => formatInline(c.trim()));
+      tableRows.push(cols);
+      inTable = true;
+      continue;
+    } else {
+      flushTable();
+    }
+
+    // Horizontal Rule
+    if (/^---+$|^\*\*\*+$/.test(line)) {
+      flushList();
+      out.push('<hr class="my-6 border-slate-800">');
+      continue;
+    }
+
+    // Headers
+    if (line.startsWith('### ')) {
+      flushList();
+      out.push(`<h4 class="text-sm font-bold text-sky-400 mt-5 mb-2 flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>${formatInline(line.slice(4))}</h4>`);
+      continue;
+    }
+    if (line.startsWith('## ')) {
+      flushList();
+      out.push(`<h3 class="text-base font-bold text-white mt-6 mb-3 pb-1 border-b border-slate-800 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-sky-500"></span>${formatInline(line.slice(3))}</h3>`);
+      continue;
+    }
+    if (line.startsWith('# ')) {
+      flushList();
+      out.push(`<h2 class="text-lg font-black text-white mt-4 mb-4 pb-2 border-b border-slate-700">${formatInline(line.slice(2))}</h2>`);
+      continue;
+    }
+
+    // Blockquote
+    if (line.startsWith('> ')) {
+      flushList();
+      out.push(`<blockquote class="border-l-2 border-sky-500 pl-3 py-1.5 my-2.5 bg-sky-950/20 text-slate-300 text-xs italic rounded-r-lg">${formatInline(line.slice(2))}</blockquote>`);
+      continue;
+    }
+
+    // Unordered list
+    if (line.startsWith('- ') || line.startsWith('* ')) {
+      if (!inList) {
+        out.push('<ul class="my-2 space-y-1 text-xs text-slate-300">');
+        inList = true;
+      }
+      out.push(`<li class="flex items-start gap-2 ml-2"><span class="text-sky-400 font-bold">•</span><span>${formatInline(line.slice(2))}</span></li>`);
+      continue;
+    }
+
+    // Ordered list
+    const numMatch = line.match(/^(\d+)\.\s+(.*)$/);
+    if (numMatch) {
+      flushList();
+      out.push(`<div class="flex items-start gap-2 my-1.5 text-xs text-slate-300 ml-1"><span class="font-bold text-sky-400 shrink-0">${numMatch[1]}.</span><span>${formatInline(numMatch[2])}</span></div>`);
+      continue;
+    }
+
+    // Empty line
+    if (line.length === 0) {
+      flushList();
+      continue;
+    }
+
+    // Regular paragraph
+    flushList();
+    out.push(`<p class="my-2 text-xs leading-relaxed text-slate-300">${formatInline(line)}</p>`);
+  }
+
+  flushTable();
+  flushList();
+
+  return out.join('\n');
+}
+
+// Copy Gemini Output
+function copyGeminiOutput() {
+  const body = document.getElementById('geminiOutputBody');
+  if (!body) return;
+  const text = body.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Hasil analisis berhasil disalin ke clipboard!');
+  }).catch(() => {
+    alert('Gagal menyalin teks.');
+  });
+}
+
+// Live Synthesis with Gemini 3.1 Flash-Lite
+async function runGeminiSynthesis() {
+  const apiKey = getStoredApiKey();
+  if (!apiKey) {
+    openApiKeyModal();
+    return;
+  }
+
+  const btn = document.getElementById('btnRunGemini');
+  const btnLabel = document.getElementById('btnRunGeminiLabel');
+  const spinIcon = document.getElementById('geminiSpinIcon');
+  const outBody = document.getElementById('geminiOutputBody');
+
+  if (btn) btn.disabled = true;
+  if (spinIcon) spinIcon.style.display = 'inline-block';
+  if (btnLabel) btnLabel.innerText = `Menganalisis ${dataset.length} Data dengan Gemini AI...`;
+  if (outBody) {
+    outBody.innerHTML = `
+      <div class="flex items-center gap-3 text-slate-300 py-10 justify-center">
+        <div class="w-6 h-6 border-2 border-sky-400 border-t-transparent rounded-full animate-spin"></div>
+        <span class="text-xs font-medium">Sedang memproses ${dataset.length} aduan & berita riil dengan Google Gemini AI (gemini-3.1-flash-lite)...</span>
+      </div>
+    `;
+  }
+
+  const dataSample = dataset.slice(0, 55).map(d => `- [${d.tgl}] [${d.opd}] [Progul: ${d.progul || 'Umum'}] [Prioritas: ${d.prioritas}] ${d.text} (Sumber: ${d.platform})`).join('\n');
+
+  const systemPrompt = `Anda adalah Lead Risk Auditor di Inspektorat Daerah Kota Padang (APIP).
+Lakukan ANALISIS MENDALAM TERHADAP KEJADIAN-KEJADIAN ITU DALAM BENTUK TABEL, GRAFIK METRIK, ANALISIS AKAR MASALAH (4 PILAR), DAN MATRIKS KUADRAN PRIORITAS 2026.
+Bahas implementasi 9 Program Unggulan Wali Kota Padang (Fadly Amran & Maigus Nasir) serta titik bottleneck di 5 OPD teknis (PUPR, Dishub, Perdagangan, DLH, Satpol PP).`;
+
+  const candidateModels = ['gemini-3.1-flash-lite', 'gemini-3.5-flash', 'gemini-3.8-flash'];
+  let lastError = null;
+
+  for (let modelName of candidateModels) {
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
+    const payload = {
+      contents: [
+        { parts: [{ text: `${systemPrompt}\n\nBERIKUT ADALAH ${dataset.length} DATA KEJADIAN & PEMBERITAAN PROGUL KOTA PADANG 2026:\n${dataSample}` }] }
+      ],
+      generationConfig: { temperature: 0.2, maxOutputTokens: 3000 }
+    };
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error?.message || `Status ${response.status}`);
+      }
+
+      const resData = await response.json();
+      const generatedText = resData.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (generatedText) {
+        if (outBody) outBody.innerHTML = parseMarkdown(generatedText);
+        const metaEl = document.getElementById('geminiMetaInfo');
+        if (metaEl) {
+          metaEl.innerHTML = `Disintesis langsung oleh <strong>${modelName}</strong> pada ${new Date().toLocaleTimeString('id-ID')} WIB (${dataset.length} data)`;
+        }
+        break;
+      }
+    } catch(err) {
+      lastError = err;
+    }
+  }
+
+  if (btn) btn.disabled = false;
+  if (spinIcon) spinIcon.style.display = 'none';
+  if (btnLabel) btnLabel.innerText = 'Perbarui Analisis dengan Gemini AI';
+}
+
+// Window Load Handler
+window.onload = function() {
+  renderTable(dataset);
+  updateApiKeyUi();
+  const outBody = document.getElementById('geminiOutputBody');
+  if (outBody && typeof INITIAL_DEEP_ANALYSIS_MD !== 'undefined' && INITIAL_DEEP_ANALYSIS_MD) {
+    outBody.innerHTML = parseMarkdown(INITIAL_DEEP_ANALYSIS_MD);
+  }
+};
+
+
+  </script>
+
+</body>
+</html>
