@@ -8,6 +8,9 @@
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Gemini External Service Module (Memisahkan API Key & Autentikasi dari Halaman) -->
+  <script src="gemini_service.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -1704,7 +1707,10 @@ function syncProgulNewsFromModal() {
 const API_KEY_STORAGE_KEY = 'gemini_api_key_padang';
 
 function getStoredApiKey() {
-  return localStorage.getItem(API_KEY_STORAGE_KEY) || 'AQ.Ab8RN6Kr3a0WRlKyFtfMK17IL0UpZj_eIb2zs8qOgLPgx_t4NA';
+  if (typeof window.getGeminiServiceKey === 'function') {
+    return window.getGeminiServiceKey();
+  }
+  return localStorage.getItem(API_KEY_STORAGE_KEY) || '';
 }
 
 function openApiKeyModal() {
